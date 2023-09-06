@@ -292,6 +292,392 @@ ggplot(data=df_infant_vs_mother, aes(x=Comparison, y=Percentage, fill=Group)) +
 
 </pre>
 
+# Figure 4C
+
+<pre>
+#------------------------Figure 4C1: Most abundant infant MAGs: Persisting vs. Transient (COUNT ONLY BARPLOT)------------------------
+library(ggplot2)
+library(ggprism)
+
+#Read in dataframe that ONLY has COUNT info
+df_most_abundant_infant_MAGs_count<-read.csv('230118_MostAbundantInfantMAGs_count_appearance.csv',
+                                       sep=",",
+                                       header = T)
+
+#Order by phylogeny
+df_most_abundant_infant_MAGs_count$Taxa <- factor(df_most_abundant_infant_MAGs_count$Taxa, levels=c("Bifidobacterium pseudocatenulatum","Bifidobacterium bifidum","Bifidobacterium longum","Bifidobacterium breve","Escherichia coli","Akkermansia muciniphila","Parabacteroides distasonis","Phocaeicola vulgatus","Bacteroides uniformis","Bacteroides fragilis","Enterococcus faecalis","Streptococcus salivarius","Faecalibacillus intestinalis","Erysipelatoclostridium ramosum","Clostridium innocuum","Veillonella parvula","Intestinibacter bartlettii","Flavonifractor plautii","Ruminococcus bromii","Ruminococcus bicirculans","Faecalibacterium prausnitzii","Gemmiger formicilis","Coprococcus eutactus","Anaerostipes hadrus","Anaerostipes caccae","Blautia wexlerae","Blautia massiliensis","Sellimonas intestinalis","Ruminococcus gnavus","Ruminococcus torques","Agathobacter rectalis"))
+
+#Plot ONLY the COUNT data
+ggplot(data=df_most_abundant_infant_MAGs_count, aes(x=Taxa, y=Count)) +
+  geom_bar(stat="identity",width=0.5, color="black", size=0.65)+
+  ylab("RG Count")+
+  ggtitle("Taxa with greatest Reconstructed Genome diversity within infants")+
+  scale_y_continuous(limits=c(0,80), expand=c(0,0), guide = guide_prism_minor())+
+  theme_bw()+
+  theme(axis.text.x = element_text(size=9, face="bold", angle = 90, vjust=0.5, hjust=1), axis.text.y = element_text(size=13, face="bold"), plot.title = element_text(size=15, face="bold", hjust=0.5), axis.title.y = element_text(size=14, face="bold"), axis.title.x=element_blank(), legend.title=element_blank(), legend.text=element_text(face="bold"), panel.grid.minor = element_blank(), panel.grid.major = element_blank(), panel.border = element_rect(colour = "black", size=1))
+
+
+#------------------------Figure 4C2: Most abundant infant MAGs: Persisting vs. Transient (PERCENTAGE ONLY BARPLOT)------------------------
+#Read in dataframe that ONLY has PERCENTAGE info
+df_most_abundant_infant_MAGs_percentage<-read.csv('230118_MostAbundantInfantMAGs_percentage.csv',
+                                                  sep=",",
+                                                  header = T)
+
+#Order by phylogeny
+df_most_abundant_infant_MAGs_percentage$Taxa <- factor(df_most_abundant_infant_MAGs_percentage$Taxa, levels=c("Bifidobacterium pseudocatenulatum","Bifidobacterium bifidum","Bifidobacterium longum","Bifidobacterium breve","Escherichia coli","Akkermansia muciniphila","Parabacteroides distasonis","Phocaeicola vulgatus","Bacteroides uniformis","Bacteroides fragilis","Enterococcus faecalis","Streptococcus salivarius","Faecalibacillus intestinalis","Erysipelatoclostridium ramosum","Clostridium innocuum","Veillonella parvula","Intestinibacter bartlettii","Flavonifractor plautii","Ruminococcus bromii","Ruminococcus bicirculans","Faecalibacterium prausnitzii","Gemmiger formicilis","Coprococcus eutactus","Anaerostipes hadrus","Anaerostipes caccae","Blautia wexlerae","Blautia massiliensis","Sellimonas intestinalis","Ruminococcus gnavus","Ruminococcus torques","Agathobacter rectalis"))
+
+#Plot ONLY the PERCENTAGE data
+ggplot(data=df_most_abundant_infant_MAGs_percentage, aes(x=Taxa, y=Percent, fill=Appearance)) +
+  geom_bar(stat="identity",width=0.75, color="black", size=0.65)+
+  scale_fill_manual(values=c('#634E52','#BD8F3F'))+
+  ylab("Percentage")+
+  ggtitle("Taxa with greatest MAG diversity within infants")+
+  scale_y_continuous(limits=c(0,100.1), expand=c(0,0), guide = guide_prism_minor())+
+  theme_bw()+
+  theme(axis.text.x = element_text(size=8, face="bold", angle = 270, vjust=0.5, hjust=0), axis.text.y = element_text(size=11, face="bold"), plot.title = element_text(size=13, face="bold", hjust=0.5), axis.title.y = element_text(size=11.5, face="bold"), axis.title.x=element_blank(), legend.title=element_blank(), legend.text=element_text(face="bold"), panel.grid.minor = element_blank(), panel.grid.major = element_blank(), panel.border = element_rect(colour = "black", size=1))
+
+</pre>
+
+# Figure 4D
+
+<pre>
+#------------------------Figure 4D: Top Taxa Avg first/last apps: All MAGs 90% BOXPLOT------------------------
+
+#Create dataframe of average first and last appearance, and 2 x (first +/- CI, last +/- CI)
+#Read in dataframe for **All MAGs** 90% BOXPLOT
+df_taxa_first_last_appearance_AllMAGs_90CI_bounds<-read.csv('230110_Top10Taxa_AvgFirstLastAppearance_AllMAGs_90CIbounds.csv',
+                                                           sep=",",
+                                                           header = T)
+
+#Order df by phylogeny and appearance
+df_taxa_first_last_appearance_AllMAGs_90CI_bounds$Taxa <- factor(df_taxa_first_last_appearance_AllMAGs_90CI_bounds$Taxa, levels = c("Bacteroides uniformis", "Bacteroides fragilis", "Phocaeicola vulgatus", "Parabacteroides distasonis", "Bifidobacterium pseudocatenulatum", "Bifidobacterium bifidum", "Bifidobacterium longum", "Faecalibacterium prausnitzii", "Anaerostipes hadrus", "Blautia wexlerae"))
+df_taxa_first_last_appearance_AllMAGs_90CI_bounds$Appearance <- factor(df_taxa_first_last_appearance_AllMAGs_90CI_bounds$Appearance, levels = c("Last","First"))
+
+
+#Create dataframe of taxa, ymin, ymax
+#Read in dataframe for **All MAGs** BOXPLOT
+df_taxa_first_last_appearance_AllMAGs_90CI_segment<-read.csv('230110_Top10Taxa_AvgFirstLastAppearance_AllMAGs_90CIsegment.csv',
+                                                            sep=",",
+                                                            header = T)
+#Order df by phylogeny
+df_taxa_first_last_appearance_AllMAGs_90CI_segment$Taxa <- factor(df_taxa_first_last_appearance_AllMAGs_90CI_segment$Taxa, levels = c("Bacteroides uniformis", "Bacteroides fragilis", "Phocaeicola vulgatus", "Parabacteroides distasonis", "Bifidobacterium pseudocatenulatum", "Bifidobacterium bifidum", "Bifidobacterium longum", "Faecalibacterium prausnitzii", "Anaerostipes hadrus", "Blautia wexlerae"))
+
+
+# **All MAGs** w/ 90% CI
+ggplot(data=df_taxa_first_last_appearance_AllMAGs_90CI_bounds, aes(x=Taxa, y=MOL))+
+  geom_boxplot(data=df_taxa_first_last_appearance_AllMAGs_90CI_bounds, aes(x=Taxa, y=MOL, fill=Appearance), position=position_dodge(0)) +
+  scale_fill_manual(values=c(First="#33B31A80",Last="#B3331A80"))+
+  geom_segment(data=df_taxa_first_last_appearance_AllMAGs_90CI_segment, aes(x=Taxa, xend=Taxa, y=First_Appearance_Upper90CI, yend=Last_Appearance_Lower90CI))+
+  coord_flip()+
+  ggtitle("All MAGs per Individual (90% CI)")+
+  ylab("MOL")+
+  scale_y_continuous(limits=c(0,105),expand = c(0,0))+
+  theme_bw()+
+  theme(axis.text.x = element_text(size=10, face="bold"), axis.text.y = element_text(size=8, face="bold"), plot.title=element_text(size=16, face="bold"), axis.title.y=element_blank(), axis.title.x=element_text(size=14, face="bold"), legend.position = "none", panel.grid.minor = element_blank(), panel.grid.major = element_blank(), panel.border = element_rect(colour = "black", size=0.75))
+
+</pre>
+
+# Figure 4E
+
+<pre>
+
+#Read dataframe
+df_strain_cooccurrence_rate<-read.csv('230402_Strain_Cooccurrence_rate_multi_only.csv', sep=",", header = T)
+
+#Order by phylogeny
+df_strain_cooccurrence_rate$Taxa <- factor(df_strain_cooccurrence_rate$Taxa, levels=c("Bifidobacterium pseudocatenulatum","Bifidobacterium bifidum","Bifidobacterium longum","Bifidobacterium breve","Escherichia coli","Akkermansia muciniphila","Parabacteroides distasonis","Phocaeicola vulgatus","Bacteroides uniformis","Bacteroides fragilis","Enterococcus faecalis","Streptococcus salivarius","Faecalibacillus intestinalis","Erysipelatoclostridium ramosum","Clostridium innocuum","Veillonella parvula","Intestinibacter bartlettii","Flavonifractor plautii","Ruminococcus bromii","Ruminococcus bicirculans","Faecalibacterium prausnitzii","Gemmiger formicilis","Coprococcus eutactus","Anaerostipes hadrus","Anaerostipes caccae","Blautia wexlerae","Blautia massiliensis","Sellimonas intestinalis","Ruminococcus gnavus","Ruminococcus torques","Agathobacter rectalis"))
+
+#Plot
+ggplot(data=df_strain_cooccurrence_rate, aes(x=Taxa, y=Percentage)) +
+  geom_bar(stat="identity",width=0.75, color="black", size=0.65)+
+  ylab("Percentage of TPs\nwith multiple strains")+
+  ggtitle("Strain Co-occurrence Rate")+
+  scale_y_continuous(limits=c(0,42.5), expand=c(0,0), guide = guide_prism_minor())+
+  theme_bw()+
+  theme(axis.text.x = element_text(size=10, face="bold", angle = 90, vjust=0.5, hjust=1), axis.text.y = element_text(size=11, face="bold"), plot.title = element_text(size=16, face="bold", hjust=0.5), axis.title.y = element_text(size=12, face="bold"), axis.title.x=element_blank(), legend.title=element_blank(), legend.text=element_text(face="bold"), panel.grid.minor = element_blank(), panel.grid.major = element_blank(), panel.border = element_rect(colour = "black", size=1))
+
+</pre>
+
+# Figure 4F
+
+<pre>
+
+#Read in dataframe that has Taxa count and MOL_range for EACH stool sample
+df_straindiversity_per_MOLrange_taxa_20individuals_nozeros<-read.csv('230402_StrainDiversity_TaxaCt_perSample_20individuals_ISprof_IScomp_dRep.csv',sep=",",header = T)
+  
+df_straindiversity_per_MOLrange_taxa_20individuals_nozeros$MOL <- as.numeric(df_straindiversity_per_MOLrange_taxa_20individuals_nozeros$MOL)
+
+#Plot **MOL** x count AS DOT PLOT - 20 individuals
+ggplot(data=df_straindiversity_per_MOLrange_taxa_20individuals_nozeros, aes(x=MOL, y=Count)) +
+  geom_point(size=2, position=position_jitter(h=0,w=0.75, seed=6), alpha=0.4)+
+  #geom_point(size=1, position=position_jitter(h=0,w=0.5, seed=3),alpha=0.5)+
+  geom_smooth(method = 'loess', color="black", fill="#996666")+
+  scale_x_continuous(limits=c(-0.1,100), expand=c(0,0), guide = guide_prism_minor())+
+  scale_y_continuous(limits=c(-0.1,9.25), expand=c(0,0), breaks=c(2,4,6,8))+
+  theme_bw()+
+  xlab("MOL")+
+  ylab("Taxa Count")+
+  ggtitle("Number of taxa with strain diversity per sample")+
+  theme(axis.text = element_text(size=14, face="bold"), plot.title = element_text(size=17, face="bold", hjust=0.5), axis.title = element_text(size=15, face="bold"), panel.grid.minor = element_blank(), panel.grid.major = element_blank(), panel.border = element_rect(colour = "black", size=1))+
+  theme(plot.margin = margin(0.2,0.5,0.1,0.25, "cm"))
+
+</pre>
+
+# Figure 5A
+
+<pre>
+#------------------------Figure 5A1: Shared-vs Not shared------------------------
+library(ggplot2)
+library(ggprism)
+
+df_familyRGs<-read.csv('230413_FamilyRGs.csv',
+                              sep=",",
+                              header = T)
+
+
+df_familyRGs$Group <- factor(df_familyRGs$Group, levels = c("Single individual","Multiple individuals"))
+
+
+ggplot(data=df_familyRGs, aes(x=Comparison, y=Count, fill=Group)) +
+  geom_bar(stat="identity",width=0.45, color="black")+
+  scale_fill_manual(values=c("#DDDDDD","#86A3BF"))+
+  scale_y_continuous(limits=c(0,2600), expand=c(0,0), guide = guide_prism_minor())+
+  xlab("RGs (Family)")+
+  ylab("Count")+
+  theme_classic()+
+  theme(axis.text = element_text(size=11, face="bold"), axis.title.y = element_text(size=13, face="bold"), axis.title.x = element_blank(), legend.title = element_blank(), legend.text = element_blank(), legend.position = "bottom")
+
+#------------------------Figure 5A2: Sharing type------------------------
+
+df_shared_familyRGs<-read.csv('230413_Shared_FamilyRGs.csv',
+                       sep=",",
+                       header = T)
+
+
+df_shared_familyRGs$Group <- factor(df_shared_familyRGs$Group, levels = c("Family Triad","Dyad: Mother-Infant","Dyad: Infant-Infant"))
+
+
+ggplot(data=df_shared_familyRGs, aes(x=Comparison, y=Count, fill=Group)) +
+  geom_bar(stat="identity",width=0.45, color="black")+
+  scale_fill_manual(name="Sharing type", values=c('#CB7122','#4E9885','#2B659D'))+
+  scale_y_continuous(limits=c(0,800), expand=c(0,0), guide = guide_prism_minor())+
+  xlab("Shared RGs")+
+  theme_classic()+
+  theme(axis.text = element_text(size=11, face="bold"), axis.title.y = element_text(size=13, face="bold"), axis.title.x = element_blank(), legend.title = element_blank(), legend.text = element_blank(), legend.position = "bottom")
+
+</pre>
+
+# Figure 5B
+
+<pre>
+#------------------------Figure 5B: Strain Sharing: Infant-Infant by Bin - INCIDENCE RATE------------------------
+
+
+##PLOT INCIDENCE RATE
+
+
+#Read in dataframe that ONLY has PERCENTAGE info
+df_infant_infant_bins<-read.csv('230413_StrainSharing_Infant_Infant_Bins_Incidence.csv',
+                                sep=",",
+                                header = T)
+
+df_infant_infant_bins$Bin <- as.factor(df_infant_infant_bins$Bin)
+df_infant_infant_bins$MOL <- as.factor(df_infant_infant_bins$MOL)
+
+#Order
+df_infant_infant_bins$Taxa <- factor(df_infant_infant_bins$Taxa, levels=c("Bacteroidales","Bifidobacteriaceae","Enterococcaceae","Erysipelotrichales","Lachnospiraceae","Oscillospiraceae","Other Eubacteriales","Other"))
+df_infant_infant_bins$MOL_elapsed <- factor(df_infant_infant_bins$MOL_elapsed, levels=c("0-6","6-9","9-12","12-15","15-36","36-94"))
+
+#Plot ONLY the PERCENTAGE data
+ggplot(data=df_infant_infant_bins, aes(x=MOL_elapsed, y=Incidence_per_individual, fill=Taxa)) +
+  geom_bar(stat="identity",width=0.5, color="black", size=0.5)+
+  scale_fill_manual(values=c('#ffffbf','#d53e4f','#7DC0A7','#ffffff','#e0e0e0','#878787','#4B86B8','#333333'))+
+  xlab("MOL")+
+  ylab("Incidence rate")+
+  geom_vline(xintercept=3.5, size=0.75, color=c('#0066FF'), linetype="dashed")+
+  ggtitle("New Strain Sharing Events per Month Between Twins")+
+  scale_y_continuous(limits=c(0,1.07), expand=c(0,0), guide = guide_prism_minor())+
+  theme_bw()+
+  theme(axis.text = element_text(size=21, face="bold"), plot.title = element_blank(), axis.title = element_text(size=26, face="bold"), legend.title=element_blank(), legend.text=element_text(face="bold"), legend.position = "none", panel.grid.minor = element_blank(), panel.grid.major = element_blank(), panel.border = element_rect(colour = "black", size=1.25))
+
+</pre>
+
+# Figure 5C
+
+<pre>
+#------------------------Figure 5C: Strain Sharing: Dyad/Triad Taxa representation------------------------
+
+library(ggplot2)
+library(ggprism)
+
+#Set working directory
+setwd("~/Library/Mobile Documents/com~apple~CloudDocs/WashU/1_Dantas Lab/Projects/04_CDI_Twins_Diet/230127_StrainSharing/csv")
+
+
+###STACKED BARPLOT - COMBINED
+#Read in dataframe with count for transient and persisting MAGs
+df_dyad_triad_taxa<-read.csv('230131_Dyad_Triad_taxa.csv',
+                                                  sep=",",
+                                                  header = T)
+
+#Order by phylogeny
+df_dyad_triad_taxa$Taxa <- factor(df_dyad_triad_taxa$Taxa, levels=c("Bifidobacterium pseudocatenulatum","Bifidobacterium adolescentis","Bifidobacterium bifidum","Bifidobacterium longum","Bifidobacterium breve","Escherichia coli","Alistipes putredinis","Alistipes finegoldii","Parabacteroides distasonis","Phocaeicola vulgatus","Bacteroides uniformis","Bacteroides thetaiotaomicron","Bacteroides fragilis","Streptococcus thermophilus","Enterococcus faecalis","Faecalibacillus intestinalis","Erysipelatoclostridium ramosum","Clostridium innocuum","Veillonella parvula","Ruminococcus bromii","Ruminococcus bicirculans","Faecalibacterium prausnitzii","Anaerostipes hadrus","Anaerostipes caccae","Lacrimispora celerecrescens","Blautia wexlerae","Blautia massiliensis","Sellimonas intestinalis","Ruminococcus gnavus","Ruminococcus torques","Ruminococcus faecis"))
+
+#Create STACKED BARPLOT - COMBINED
+ggplot(data=df_dyad_triad_taxa, aes(x=Taxa, y=Count, fill=Type)) +
+  geom_bar(stat="identity",width=0.75, color="black", size=0.65)+
+  scale_fill_manual(name="Sharing type", values=c('#CB7122','#4E9885','#2B659D'))+
+  ylab("Shared MAG Count")+
+  ggtitle("Most common taxa representing intra-family strain sharing")+
+  scale_y_continuous(limits=c(0,22.575), expand=c(0,0), guide = guide_prism_minor())+
+  theme_bw()+
+  theme(axis.text.x = element_text(size=8, face="bold", angle = 270, vjust=0.5, hjust=0), axis.text.y = element_text(size=11, face="bold"), plot.title = element_text(size=13, face="bold", hjust=0.5), axis.title.y = element_text(size=11.5, face="bold"), axis.title.x=element_blank(), legend.title=element_text(face="bold"), legend.text=element_text(face="bold"), panel.grid.minor = element_blank(), panel.grid.major = element_blank(), panel.border = element_rect(colour = "black", size=1))
+
+</pre>
+
+# Figure 5D
+
+<pre>
+#------------------------Figure 5D1: Strain Sharing: Mother-Infant First Appearance: Bacteroidales------------------------
+
+library(ggplot2)
+library(ggprism)
+
+#Read in dataframe with first appearance of a shared strain in mother and first infant
+df_mother_infant_first_app_bacteroidales<-read.csv('230207_SharedMAG_MotherInfant_FirstAppearance_Bacteroidales.csv',
+                                                   sep=",",
+                                                   header = T)
+
+#Calculate group means
+library(plyr)
+mean_mother_infant_first_app_bacteroidales <- ddply(df_mother_infant_first_app_bacteroidales, "Group", summarise, grp.mean=mean(MOL))
+median_mother_infant_first_app_bacteroidales <- ddply(df_mother_infant_first_app_bacteroidales, "Group", summarise, grp.median=median(MOL))
+
+#Create density plot
+ggplot(data=df_mother_infant_first_app_bacteroidales, aes(x=MOL, fill=Group)) +
+  geom_density(alpha=0.4)+
+  scale_color_manual(values=c("#FFCC66", "black"))+
+  scale_fill_manual(values=c("#F9DA78", "black"))+
+  scale_x_continuous(limits=c(0,97), expand=c(0,0), guide = guide_prism_minor())+
+  scale_y_continuous(limits=c(0,0.1500001), expand=c(0,0), guide = guide_prism_minor())+
+  geom_vline(data=mean_mother_infant_first_app_bacteroidales, aes(xintercept=grp.mean, color=Group), size=0.75, linetype="dashed")+
+  annotate("text",x=75,y=0.142,size=5,label="n=60 shared strains")+
+  ggtitle("Bacteroidales")+
+  ylab("Density")+
+  theme_bw()+
+  theme(axis.text = element_text(size=18, face="bold"), plot.title = element_text(size=21, face="bold", hjust=0.5), axis.title = element_text(size=20, face="bold"), legend.position="none", panel.grid.minor = element_blank(), panel.grid.major = element_blank(), panel.border = element_rect(colour = "black", size=1))
+
+#------------------------Figure 5D2: Strain Sharing: Mother-Infant First Appearance: Lachnospiraceae------------------------
+
+library(ggplot2)
+library(ggprism)
+
+#Read in dataframe with first appearance of a shared strain in mother and first infant
+df_mother_infant_first_app_lachnospiraceae<-read.csv('230207_SharedMAG_MotherInfant_FirstAppearance_Lachnospiraceae.csv',
+                                                   sep=",",
+                                                   header = T)
+
+#Calculate group means
+library(plyr)
+mean_mother_infant_first_app_lachnospiraceae <- ddply(df_mother_infant_first_app_lachnospiraceae, "Group", summarise, grp.mean=mean(MOL))
+median_mother_infant_first_app_lachnospiraceae <- ddply(df_mother_infant_first_app_lachnospiraceae, "Group", summarise, grp.median=median(MOL))
+
+#Create density plot
+ggplot(data=df_mother_infant_first_app_lachnospiraceae, aes(x=MOL, fill=Group)) +
+  geom_density(alpha=0.4)+
+  scale_color_manual(values=c("#FFCC66", "black"))+
+  scale_fill_manual(values=c("#F9DA78", "black"))+
+  scale_x_continuous(limits=c(0,97), expand=c(0,0), guide = guide_prism_minor())+
+  scale_y_continuous(limits=c(0,0.1500001), expand=c(0,0), guide = guide_prism_minor())+
+  geom_vline(data=mean_mother_infant_first_app_lachnospiraceae, aes(xintercept=grp.mean, color=Group), size=0.75, linetype="dashed")+
+  annotate("text",x=75,y=0.141,size=5,label="n=51 shared strains")+
+  ggtitle("Lachnospiraceae")+
+  ylab("Density")+
+  theme_bw()+
+  theme(axis.text = element_text(size=18, face="bold"), plot.title = element_text(size=21, face="bold", hjust=0.5), axis.title = element_text(size=20, face="bold"), legend.position="none", panel.grid.minor = element_blank(), panel.grid.major = element_blank(), panel.border = element_rect(colour = "black", size=1))
+
+#------------------------Figure 5D3: Strain Sharing: Mother-Infant First Appearance: Oscillospiraceae------------------------
+
+library(ggplot2)
+library(ggprism)
+
+#Read in dataframe with first appearance of a shared strain in mother and first infant
+df_mother_infant_first_app_oscillospiraceae<-read.csv('230207_SharedMAG_MotherInfant_FirstAppearance_Oscillospiraceae.csv',
+                                                      sep=",",
+                                                      header = T)
+
+#Calculate group means
+library(plyr)
+mean_mother_infant_first_app_oscillospiraceae <- ddply(df_mother_infant_first_app_oscillospiraceae, "Group", summarise, grp.mean=mean(MOL))
+median_mother_infant_first_app_oscillospiraceae <- ddply(df_mother_infant_first_app_oscillospiraceae, "Group", summarise, grp.median=median(MOL))
+
+#Create density plot
+ggplot(data=df_mother_infant_first_app_oscillospiraceae, aes(x=MOL, fill=Group)) +
+  geom_density(alpha=0.4)+
+  scale_color_manual(values=c("#FFCC66", "black"))+
+  scale_fill_manual(values=c("#F9DA78", "black"))+
+  scale_x_continuous(limits=c(0,97), expand=c(0,0), guide = guide_prism_minor())+
+  scale_y_continuous(limits=c(0,0.1500001), expand=c(0,0), guide = guide_prism_minor())+
+  geom_vline(data=mean_mother_infant_first_app_oscillospiraceae, aes(xintercept=grp.mean, color=Group), size=0.75, linetype="dashed")+
+  annotate("text",x=75,y=0.141,size=5,label="n=21 shared strains")+
+  ggtitle("Oscillospiraceae")+
+  ylab("Density")+
+  theme_bw()+
+  theme(axis.text = element_text(size=18, face="bold"), plot.title = element_text(size=21, face="bold", hjust=0.5), axis.title = element_text(size=20, face="bold"), legend.position="none", panel.grid.minor = element_blank(), panel.grid.major = element_blank(), panel.border = element_rect(colour = "black", size=1))
+
+#------------------------Figure 5D4: Strain Sharing: Mother-Infant First Appearance: Bifidobacteriaceae------------------------
+
+library(ggplot2)
+library(ggprism)
+
+#Read in dataframe with first appearance of a shared strain in mother and first infant
+df_mother_infant_first_app_bifidobacteriaceae<-read.csv('230207_SharedMAG_MotherInfant_FirstAppearance_Bifidobacteriaceae.csv',
+                                                        sep=",",
+                                                        header = T)
+
+#Calculate group means
+library(plyr)
+mean_mother_infant_first_app_bifidobacteriaceae <- ddply(df_mother_infant_first_app_bifidobacteriaceae, "Group", summarise, grp.mean=mean(MOL))
+median_mother_infant_first_app_bifidobacteriaceae <- ddply(df_mother_infant_first_app_bifidobacteriaceae, "Group", summarise, grp.median=median(MOL))
+
+#Create density plot
+ggplot(data=df_mother_infant_first_app_bifidobacteriaceae, aes(x=MOL, fill=Group)) +
+  geom_density(alpha=0.4)+
+  scale_color_manual(values=c("#FFCC66", "black"))+
+  scale_fill_manual(values=c("#F9DA78", "black"))+
+  scale_x_continuous(limits=c(0,97), expand=c(0,0), guide = guide_prism_minor())+
+  scale_y_continuous(limits=c(0,0.1500001), expand=c(0,0), guide = guide_prism_minor())+
+  geom_vline(data=mean_mother_infant_first_app_bifidobacteriaceae, aes(xintercept=grp.mean, color=Group), size=0.75, linetype="dashed")+
+  annotate("text",x=75,y=0.141,size=5,label="n=20 shared strains")+
+  ggtitle("Bifidobacteriaceae")+
+  ylab("Density")+
+  theme_bw()+
+  theme(axis.text = element_text(size=18, face="bold"), plot.title = element_text(size=21, face="bold", hjust=0.5), axis.title = element_text(size=20, face="bold"), legend.position="none", panel.grid.minor = element_blank(), panel.grid.major = element_blank(), panel.border = element_rect(colour = "black", size=1))
+
+#------------------------Figure 5D: Strain Sharing: Paired samples Wilcoxon tests------------------------
+bacteroidales_mother <-c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,6,6,7,23,23,24,36,36,36,6,7,36)
+bacteroidales_infant <-c(9,36,6,6,6,6,6,6,6,6,6,6,6,7,7,7,9,10,10,11,11,11,11,12,14,14,14,17,18,20,23,23,23,33,33,35,35,35,37,37,52,66,93,95,97,97,7,46,10,10,37,97,97,52,9,16,22,6,7,35)
+wilcox.test(bacteroidales_mother, bacteroidales_infant, paired = TRUE)
+wilcox.test(bacteroidales_mother, bacteroidales_infant, paired = TRUE, alternative="less")
+
+lachnospiraceae_mother <-c(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,6,6,6,6,6,7,7,7,7,24,27,36,36,7,7,7,7,7,7,24,24,24,36,36)
+lachnospiraceae_infant <-c(6,6,6,9,10,10,10,10,10,12,13,14,16,22,23,35,36,47,66,76,95,12,12,12,16,21,24,13,13,17,24,36,10,12,13,17,7,6,23,12,7,7,7,7,6,6,24,22,23,35,34)
+wilcox.test(lachnospiraceae_mother, lachnospiraceae_infant, paired = TRUE)
+wilcox.test(lachnospiraceae_mother, lachnospiraceae_infant, paired = TRUE, alternative="less")
+
+oscillospiraceae_mother <-c(0,0,0,0,0,0,0,1,1,6,7,7,36,24,24,36,36,0,7,24,36)
+oscillospiraceae_infant <-c(6,10,20,33,36,36,47,36,73,14,12,13,24,22,23,34,35,10,37,24,35)
+wilcox.test(oscillospiraceae_mother, oscillospiraceae_infant, paired = TRUE)
+wilcox.test(oscillospiraceae_mother, oscillospiraceae_infant, paired = TRUE, alternative="less")
+
+bifidobacteriaceae_mother <-c(0,0,0,0,0,0,0,0,1,24,36,24,24,36,1,7,7,7,7,36)
+bifidobacteriaceae_infant <-c(2,2,6,6,6,7,10,10,7,33,41,2,7,24,1,7,7,7,7,35)
+wilcox.test(bifidobacteriaceae_mother, bifidobacteriaceae_infant, paired = TRUE)
+wilcox.test(bifidobacteriaceae_mother, bifidobacteriaceae_infant, paired = TRUE, alternative="less")
+
+p.adjust(c(2.914e-09, 1.255e-05, 0.001894, 0.1738), method="fdr")
+</pre>
+
 # Supplementary Figure 1
 
 <pre>
@@ -636,26 +1022,26 @@ ggplot(data=df_persistingMAGs_samples_per_individual, aes(x=samples, y=count)) +
 # Supplementary Figure 7C
 
 <pre>
-#------------------------Suppl Figure 7C: Persisting MAGs: Number of samples across individuals that carry a persisting MAG of a taxa------------------------
+#------------------------Suppl Figure 7C: Strain Sharing: Samples per shared MAG------------------------
 
 library(ggplot2)
 library(ggprism)
 
-df_samples_w_persistingMAGs_of_a_taxa <- data.frame(samples  = c("2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21-30","31-40","41-50","51-60","61-80","81-100","101-119"),
-                                         count = c("46","12","22","11","11","9","7","7","2","7","7","3","4","3","3","5","4","1","0","20","13","9","6","6","4","2")
+df_sharedMAGs_samples_per_MAG <- data.frame(samples  = c("2","3","4","5","6","7","8","9","10","11","12","13","14","15-17","18-20","21-23","24-26","27-29"),
+                                                       count = c("204","88","117","81","54","32","29","26","23","13","11","9","9","10","10","7","2","1")
 )
 
-df_samples_w_persistingMAGs_of_a_taxa$samples <- factor(df_samples_w_persistingMAGs_of_a_taxa$samples, levels = c("2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21-30","31-40","41-50","51-60","61-80","81-100","101-119"))
-df_samples_w_persistingMAGs_of_a_taxa$count <- as.numeric(df_samples_w_persistingMAGs_of_a_taxa$count)
+df_sharedMAGs_samples_per_MAG$samples <- factor(df_sharedMAGs_samples_per_MAG$samples, levels = c("2","3","4","5","6","7","8","9","10","11","12","13","14","15-17","18-20","21-23","24-26","27-29"))
+df_sharedMAGs_samples_per_MAG$count <- as.numeric(df_sharedMAGs_samples_per_MAG$count)
 
-ggplot(data=df_samples_w_persistingMAGs_of_a_taxa, aes(x=samples, y=count)) +
-  geom_bar(stat="identity",width=0.75, fill="#CCCCFF", color="black", size=0.65)+
+ggplot(data=df_sharedMAGs_samples_per_MAG, aes(x=samples, y=count)) +
+  geom_bar(stat="identity",width=0.75, fill="#86A3BF", color="black", size=0.65)+
   theme_bw()+
-  scale_y_continuous(limits=c(0,50), expand=c(0,0), guide = guide_prism_minor())+
-  xlab("Sample Count")+
-  ylab("Taxa Count")+
-  annotate("text",x=21.6,y=47.5,label="n=204 samples across individuals")+
-  ggtitle("Number of samples across individuals that carry a persisting MAG of a taxon")+
-  theme(axis.text.x = element_text(size=9.5, face="bold", angle = 270, vjust=0.5, hjust=0), axis.text.y = element_text(size=11, face="bold"), plot.title = element_text(size=13, face="bold", hjust=0.5), axis.title = element_text(size=11.5, face="bold"), panel.grid.minor = element_blank(), panel.grid.major = element_blank(), panel.border = element_rect(colour = "black", size=1))
+  scale_y_continuous(limits=c(0,210), expand=c(0,0), guide = guide_prism_minor())+
+  xlab("Intra-Family Sample Count")+
+  ylab("Shared MAG Count")+
+  annotate("text",x=15.8,y=201,label="n=726 total shared MAGs")+
+  ggtitle("Appearances per Shared MAG within a Family")+
+  theme(axis.text.x = element_text(size=8, face="bold"), axis.text.y = element_text(size=11, face="bold"), plot.title = element_text(size=13, face="bold", hjust=0.5), axis.title = element_text(size=11.5, face="bold"), panel.grid.minor = element_blank(), panel.grid.major = element_blank(), panel.border = element_rect(colour = "black", size=1))
 
 </pre>
