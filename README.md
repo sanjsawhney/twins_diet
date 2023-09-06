@@ -681,10 +681,10 @@ p.adjust(c(2.914e-09, 1.255e-05, 0.001894, 0.1738), method="fdr")
 # Figure 6A
 
 <pre>
-#INFANTS: TAXA ≥ 5 MAGs: DIET: Breadth-adjusted Aggregate popSNP ct by LoPthruTP2 ()
-df_popSNP_ct_perMAG_byLOPthruTP2_infants_taxa5ct_diet<-read.csv('230311_popSNP_ct_perMAG_byLOPthruTP2_Taxa5ct_infants_diet.csv',
-                                                           sep=",",
-                                                           header = T)
+
+#INFANTS: ALL TAXA: Breadth-adjusted Aggregate popSNP ct by LoPthruTP2 (230311_01.1_Infant_breadth-adjAGGREGATEpopSNP_alltaxa.pdf)
+df_popSNP_ct_perMAG_byLOPthruTP2_infants_alltaxa<-read.csv('230314_popSNP_ct_perMAG_byLOPthruTP2_infants_gs.csv', sep=",", header = T)
+
 df_popSNP_ct_perMAG_byLOPthruTP2_infants_alltaxa$Group <- factor(df_popSNP_ct_perMAG_byLOPthruTP2_infants_alltaxa$Group, levels = c("Colonized before WN, timepoint before WN","Colonized before WN, timepoint after WN", "Colonized after WN, timepoint after WN"))
 df_popSNP_ct_perMAG_byLOPthruTP2_infants_alltaxa$Initial_Colonization <- factor(df_popSNP_ct_perMAG_byLOPthruTP2_infants_alltaxa$Initial_Colonization, levels = c("Before weaning","After weaning"))
 
