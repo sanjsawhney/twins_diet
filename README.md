@@ -678,6 +678,131 @@ wilcox.test(bifidobacteriaceae_mother, bifidobacteriaceae_infant, paired = TRUE,
 p.adjust(c(2.914e-09, 1.255e-05, 0.001894, 0.1738), method="fdr")
 </pre>
 
+# Figure 6A
+
+<pre>
+#INFANTS: TAXA ≥ 5 MAGs: DIET: Breadth-adjusted Aggregate popSNP ct by LoPthruTP2 ()
+df_popSNP_ct_perMAG_byLOPthruTP2_infants_taxa5ct_diet<-read.csv('230311_popSNP_ct_perMAG_byLOPthruTP2_Taxa5ct_infants_diet.csv',
+                                                           sep=",",
+                                                           header = T)
+df_popSNP_ct_perMAG_byLOPthruTP2_infants_alltaxa$Group <- factor(df_popSNP_ct_perMAG_byLOPthruTP2_infants_alltaxa$Group, levels = c("Colonized before WN, timepoint before WN","Colonized before WN, timepoint after WN", "Colonized after WN, timepoint after WN"))
+df_popSNP_ct_perMAG_byLOPthruTP2_infants_alltaxa$Initial_Colonization <- factor(df_popSNP_ct_perMAG_byLOPthruTP2_infants_alltaxa$Initial_Colonization, levels = c("Before weaning","After weaning"))
+
+ggplot(data=df_popSNP_ct_perMAG_byLOPthruTP2_infants_alltaxa, aes(x=LoPthruTP2, y=Aggregate_Adjusted_popSNP_Count)) +
+  #geom_point(size=1.5, alpha=0.5, fill="black")+
+  geom_point(aes(color=Group), size=1, position=position_jitter(h=0.3,w=0.025), alpha=0.5)+
+  scale_color_manual(values=c("#33CCFF","#0066FF","#CC9966","#0099FF","#CC9966"))+
+  geom_smooth(aes(color=Initial_Colonization), method = 'loess')+
+  scale_x_continuous(limits=c(-.085,8), expand=c(0,0), guide = guide_prism_minor())+
+  scale_y_continuous(limits=c(-2,135), expand=c(0,0), guide = guide_prism_minor())+
+  annotate("text",x=0.77,y=130,label="n = 763 MAGs (194 taxa)")+
+  xlab("Length of persistence")+
+  ylab("popSNPs since seeding")+
+  ggtitle("INFANTS: Breadth- and Length-adjusted popSNP Count by Years since seeding")+
+  theme_bw()+
+  theme(axis.text=element_text(size=12,face="bold"), axis.title=element_text(size=13,face="bold"), panel.grid.minor=element_blank(), legend.title=element_blank(), legend.position = "none", plot.title=element_text(size=15,face="bold",hjust=0.5), panel.grid.major=element_blank(), panel.border=element_rect(colour="black",size=1))
+
+</pre>
+
+# Figure 6B-C
+
+Made in Prism 9.
+
+# Figure 6D
+
+<pre>
+#------------------------Figure 6D: PCoA by ORF COG: BRAY-CURTIS: One point per Category, One entry per ORF: PERCENTAGE - No S------------------------
+
+#load vegan for jaccard distance, ape for pcoa, ggplot2 for visualization
+library(ape)
+library(vegan)
+library(ggplot2)
+library(reshape2)
+library(ggforce)
+
+#Read in MAG_COG_ct.csv (.Rtab file)
+##Change file name
+df_category_COG_pct_noS_v1<-read.csv('230321_04_COGpercentage_byIndividualWeaningDiet_noS.csv', sep=",", header = T)
+#Convert df to wide
+df_category_COG_pct_noS_v1 <- dcast(df_category_COG_pct_noS_v1, Category ~ COG, fill=0)
+#Make MAG column the Rownames
+df_category_COG_pct_noS <- df_category_COG_pct_noS_v1[,-1]
+rownames(df_category_COG_pct_noS) <- df_category_COG_pct_noS_v1[,1]
+
+#Calculate bray distance. Set to matrix
+bray_category_COG_pct_noS<-as.matrix(vegdist(df_category_COG_pct_noS, method='bray'))
+
+#Make PCoA (correction is to account for negative eigenvalues) - can use "lingoes" or "cailliez"
+#Look through pcoa_accessorygenome_corr on first use to gain an understanding of what $values, $vectors, and $vectors.cor mean
+pca_bray_category_COG_pct_noS<-pcoa(bray_category_COG_pct_noS)
+
+#Get PCoA vectors to plot ordination as axis x axis. Set to data frame
+pcavectors_bray_category_COG_pct_noS<-as.data.frame(pca_bray_category_COG_pct_noS$vectors)
+
+#Get % variance captured by each axis. Rel_corr_eig = Relative eigenvalues following correction method. Sums to 1.0000
+rel_eigen_bray_category_COG_pct_noS<-pca_bray_category_COG_pct_noS$values$Relative_eig
+rel_eigen_bray_category_COG_pct_noS
+
+#Add cohort metadata
+##Change csv name in both lines
+write.csv(pcavectors_bray_category_COG_pct_noS[,c("Axis.1","Axis.2","Axis.3")],"230322_04_bray_Category_COG_pca_pct_noS.csv")
+pcavectors_bray_category_COG_pct_noS=read.csv("230322_04_bray_Category_COG_pca_pct_noS.csv", sep=",")
+
+pcavectors_bray_category_COG_pct_noS$Category <- factor(pcavectors_bray_category_COG_pct_noS$Category, levels=c("Breastfed_beforeWeaning","Intermediate_beforeWeaning","Formula_beforeWeaning","Breastfed_afterWeaning","Intermediate_afterWeaning","Formula_afterWeaning","Mother"))
+pcavectors_bray_category_COG_pct_noS$Diet <- factor(pcavectors_bray_category_COG_pct_noS$Diet, levels=c("Breastfed","Intermediate","Formula","Mother"))
+pcavectors_bray_category_COG_pct_noS$Weaning <- factor(pcavectors_bray_category_COG_pct_noS$Weaning, levels=c("Before","After","Mother"))
+
+#plot
+ggplot(
+  pcavectors_bray_category_COG_pct_noS,aes(x=Axis.1, y=Axis.2))+
+  geom_point(aes(fill=Diet, shape=Weaning), size=5, stroke=1)+
+  ggtitle("Distribution of SNP-accruing ORFs across persisting strains by COG")+
+  xlab("PCA1 (45.7%)")+ylab("PCA2 (32.8%)")+
+  scale_fill_manual(values=c("#FCFDC6", "#C34E6E", "#21134E", "white"))+
+  #scale_fill_manual(values=c("#FCFDC6","#F25F88","#5D35DF","#CFD0A3", "#C34E6E", "#21134E", "#ED774D"))+
+  scale_shape_manual(values=c(21, 23, 22))+
+  scale_color_manual(values=c("#0099FF","#CC9966"))+
+  geom_mark_ellipse(aes(color = Weaning, filter = Weaning != 'Mother'), size = 0.75)+
+  theme_bw()+theme(aspect.ratio = rel_eigen_bray_category_COG_pct_noS[2]/rel_eigen_bray_category_COG_pct_noS[1])+
+  theme(axis.title=element_text(size=14,face="bold"), axis.text=element_blank(), axis.ticks=element_blank(), panel.border=element_rect(colour="black",fill=NA,size=1), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.title=element_text(face="bold"), legend.text=element_text(face="bold"), plot.title = element_text(hjust = 0.25,size=16,face="bold"))+
+  guides(fill=guide_legend(override.aes=list(shape=21)))
+stat_ellipse()
+
+</pre>
+
+# Figure 6E
+
+<pre>
+#------------------------Figure 6E: Boxplot comparing Bray-Curtis distance between Pre-Weaning, Post-Weaning, and Mother mutated gene COG profiles------------------------
+
+#read in boxplot csv
+df_pairwise_boxplot<-read.csv('230322_bray_pairwise_boxplot_2groups.csv',
+                              sep=",",
+                              header = T)
+
+library(ggplot2)
+library(ggpubr)
+library(ggprism)
+
+df_pairwise_boxplot$Comparison_type___Family <- factor(df_pairwise_boxplot$Comparison_type___Family,levels = c("before___mother___same","before___mother___different","after___mother___same","after___mother___different"))
+df_pairwise_boxplot$Family <- factor(df_pairwise_boxplot$Family,levels = c("Same","Different"))
+df_pairwise_boxplot$Weaning <- factor(df_pairwise_boxplot$Weaning,levels = c("Pre","Post"))
+
+ggplot(df_pairwise_boxplot, aes(Weaning, Bray_Curtis_distance)) +
+  geom_boxplot(aes(colour = Weaning), outlier.shape = NA, lwd=0.75, width=0.55)+
+  geom_point(aes(fill = Weaning), size = 5, alpha=0.75, shape=21, position = position_jitterdodge(jitter.width = 0.75, jitter.height = 0, seed=35))+
+  scale_x_discrete(labels=c("Pre-Weaning Infant vs. Mother","Post-Weaning Infant vs. Mother"))+
+  scale_color_manual(values=c("#0099FF","#CC9966"))+
+  scale_fill_manual(values=c("#0099FF","#CC9966"))+
+  scale_y_continuous(limits=c(0.18,0.4995), expand=c(0,0), guide = guide_prism_minor())+
+  ylab("Bray-Curtis dissimilarity")+
+  ggtitle("Distance between COG functional profiles of mutated genes")+
+  stat_compare_means(method = "wilcox.test", aes(group = Weaning), comparisons=list(c("Pre", "Post")), label = "p.signif", label.x = 1.5, label.y = 0.45, bracket.size = 0.75, size=10, face="bold")+
+  theme_bw()+
+  theme(plot.title=element_text(size=17,face="bold", hjust=0.5), axis.title.x=element_blank(), axis.title.y=element_text(size=13, face="bold"), axis.text = element_text(face = "bold",size = 12), legend.title=element_text(face="bold"), legend.text=element_text(face="bold"), panel.border=element_rect(colour="black",fill=NA,size=1), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+
+</pre>
+
 # Supplementary Figure 1
 
 <pre>
@@ -1045,3 +1170,235 @@ ggplot(data=df_sharedMAGs_samples_per_MAG, aes(x=samples, y=count)) +
   theme(axis.text.x = element_text(size=8, face="bold"), axis.text.y = element_text(size=11, face="bold"), plot.title = element_text(size=13, face="bold", hjust=0.5), axis.title = element_text(size=11.5, face="bold"), panel.grid.minor = element_blank(), panel.grid.major = element_blank(), panel.border = element_rect(colour = "black", size=1))
 
 </pre>
+
+# Supplementary Figure 8
+
+<pre>
+
+#------------------------Suppl Figure 8: Aggregate popSNP by Length of persistence (Infant): FACETED BY TAXA, COLORED BY INDIVIDUAL------------------------
+
+library(ggplot2)
+library(ggprism)
+library(ggpubr)
+#library(ggExtra)
+
+#TAXA5CT: Read in INFANT dataframe that has breadth-adjusted popSNP ct by LoPthruTP2
+df_popSNP_ct_perMAG_byLOPthruTP2_infants_5ct<-read.csv('230311_popSNP_ct_perMAG_byLOPthruTP2_Taxa5ct_infants_diet.csv',
+                                                   sep=",",
+                                                   header = T)
+  
+df_popSNP_ct_perMAG_byLOPthruTP2_infants_5ct$Taxa <- factor(df_popSNP_ct_perMAG_byLOPthruTP2_infants_5ct$Taxa, levels = c("Faecalibacterium prausnitzii","Clostridium sp.","Bifidobacterium pseudocatenulatum","Oscillospiraceae bacterium","Bifidobacterium longum","Collinsella sp.","Bifidobacterium bifidum","Sellimonas intestinalis","[Ruminococcus] gnavus","Acutalibacteraceae bacterium","Enterococcus faecalis","Erysipelatoclostridium ramosum","Parabacteroides distasonis","Bacteroides uniformis","Blautia wexlerae","Bifidobacterium breve","Blautia sp.","[Clostridium] innocuum","Phocaeicola vulgatus","Bacteroides fragilis","Anaerostipes hadrus","Anaerostipes caccae","Veillonella parvula","Bacteroides thetaiotaomicron","Flavonifractor plautii","Blautia massiliensis","Alistipes finegoldii","Mediterraneibacter faecis","Ruminococcus bromii","Enterococcus avium","Coprococcus phoceensis","Akkermansia muciniphila","Alistipes onderdonkii","Lachnospiraceae bacterium","Eubacterium sp.","Streptococcus salivarius","Clostridia bacterium","Prevotella copri","Bacteroides ovatus","Bacteroides caccae","Faecalibacillus intestinalis","Lacticaseibacillus rhamnosus","Ruminococcus bicirculans","Alistipes putredinis","Dialister invisus","Dorea longicatena","Bifidobacterium adolescentis","Anaerovoracaceae bacterium","Blautia hansenii","Coprococcus eutactus","Escherichia coli","Blautia caecimuris","Subdoligranulum sp.","Hungatella hathewayi","Streptococcus sp."))
+
+#PLOT: INFANTS, FACET: TAXA >= 5 MAGs: color by INDIVIDUAL (230312_03.1_Infant_breadth-adjAGGREGATEpopSNP_FACETEDbyTaxa5ct.pdf)
+plot_popSNPs_byLOPthruTP2_ALLtaxa_infants_barebones_individual <- ggplot(data=df_popSNP_ct_perMAG_byLOPthruTP2_infants_5ct, aes(x=LoPthruTP2, y=Aggregate_Adjusted_popSNP_Count)) +
+  geom_point(aes(color=Individual), size=1.25, position=position_jitter(h=0.1,w=0.025), alpha=0.5)+
+  geom_smooth(method = 'lm', se=FALSE, color="black", size=0.5)+
+  stat_regline_equation(aes(label =  paste(..rr.label..)), size = 3)+
+  xlab("Duration of persistence")+
+  ylab("Breadth-adjusted popSNPs since seeding")+
+  ggtitle("INFANTS: Breadth-adjusted popSNP count by Years since seeding")+
+  theme_bw()+
+  theme(axis.text=element_text(size=8,face="bold"), axis.title=element_text(size=13,face="bold"), panel.grid.minor=element_blank(), legend.title=element_blank(), plot.title=element_text(size=15,face="bold",hjust=0.5), panel.grid.major=element_blank(), panel.border=element_rect(colour="black",size=1))
+
+plot_popSNPs_byLOPthruTP2_ALLtaxa_infants_barebones_individual
+plot_popSNPs_byLOPthruTP2_ALLtaxa_infants_barebones_individual + facet_wrap(~ Taxa, ncol=8, scales='free') + theme(strip.text.x = element_text(size=5.5, face = "bold"))
+
+</pre>
+
+# Supplementary Figure 9
+
+<pre>
+
+#------------------------Suppl Figure 9: Aggregate popSNP by Length of persistence (Infant): FACETED BY TAXA, COLORED BY WEANING STATUS------------------------
+
+library(ggplot2)
+library(ggprism)
+library(ggpubr)
+#library(ggExtra)
+
+#TAXA5CT: Read in INFANT dataframe that has breadth-adjusted popSNP ct by LoPthruTP2
+df_popSNP_ct_perMAG_byLOPthruTP2_infants_5ct<-read.csv('230311_popSNP_ct_perMAG_byLOPthruTP2_Taxa5ct_infants_diet.csv',
+                                                   sep=",",
+                                                   header = T)
+  
+df_popSNP_ct_perMAG_byLOPthruTP2_infants_5ct$Taxa <- factor(df_popSNP_ct_perMAG_byLOPthruTP2_infants_5ct$Taxa, levels = c("Faecalibacterium prausnitzii","Clostridium sp.","Bifidobacterium pseudocatenulatum","Oscillospiraceae bacterium","Bifidobacterium longum","Collinsella sp.","Bifidobacterium bifidum","Sellimonas intestinalis","[Ruminococcus] gnavus","Acutalibacteraceae bacterium","Enterococcus faecalis","Erysipelatoclostridium ramosum","Parabacteroides distasonis","Bacteroides uniformis","Blautia wexlerae","Bifidobacterium breve","Blautia sp.","[Clostridium] innocuum","Phocaeicola vulgatus","Bacteroides fragilis","Anaerostipes hadrus","Anaerostipes caccae","Veillonella parvula","Bacteroides thetaiotaomicron","Flavonifractor plautii","Blautia massiliensis","Alistipes finegoldii","Mediterraneibacter faecis","Ruminococcus bromii","Enterococcus avium","Coprococcus phoceensis","Akkermansia muciniphila","Alistipes onderdonkii","Lachnospiraceae bacterium","Eubacterium sp.","Streptococcus salivarius","Clostridia bacterium","Prevotella copri","Bacteroides ovatus","Bacteroides caccae","Faecalibacillus intestinalis","Lacticaseibacillus rhamnosus","Ruminococcus bicirculans","Alistipes putredinis","Dialister invisus","Dorea longicatena","Bifidobacterium adolescentis","Anaerovoracaceae bacterium","Blautia hansenii","Coprococcus eutactus","Escherichia coli","Blautia caecimuris","Subdoligranulum sp.","Hungatella hathewayi","Streptococcus sp."))
+
+#PLOT: INFANTS, FACET: TAXA >= 5 MAGs: color by DIET (230313_03.3_Infant_breadth-adjAGGREGATEpopSNP_FACETEDbyTaxa5ct_DIET.pdf)
+plot_popSNPs_byLOPthruTP2_ALLtaxa_infants_barebones_diet <- ggplot(data=df_popSNP_ct_perMAG_byLOPthruTP2_infants_5ct, aes(x=LoPthruTP2, y=Aggregate_Adjusted_popSNP_Count)) +
+  geom_point(aes(color=Group), size=1.25, position=position_jitter(h=0.1,w=0.025), alpha=0.5)+
+  scale_color_manual(values=c("#33CCFF","#0066FF","#CC9966"))+
+  geom_smooth(method = 'lm', se=FALSE, color="black", size=0.5)+
+  stat_regline_equation(aes(label =  paste(..rr.label..)), size = 3)+
+  xlab("Duration of persistence")+
+  ylab("Breadth-adjusted popSNPs since seeding")+
+  ggtitle("INFANTS: Breadth-adjusted popSNP count by Years since seeding")+
+  theme_bw()+
+  theme(axis.text=element_text(size=8,face="bold"), axis.title=element_text(size=13,face="bold"), panel.grid.minor=element_blank(), legend.title=element_blank(), plot.title=element_text(size=15,face="bold",hjust=0.5), panel.grid.major=element_blank(), panel.border=element_rect(colour="black",size=1))
+
+plot_popSNPs_byLOPthruTP2_ALLtaxa_infants_barebones_diet
+plot_popSNPs_byLOPthruTP2_ALLtaxa_infants_barebones_diet + facet_wrap(~ Taxa, ncol=8, scales='free') + theme(strip.text.x = element_text(size=5.5, face = "bold"))
+
+</pre>
+
+# Supplementary Figure 10
+
+<pre>
+
+#------------------------Suppl Figure 10: Aggregate popSNP by Length of persistence (Mother): FACETED BY TAXA, COLORED BY INDIVIDUAL------------------------
+
+#TAXA5CT: Read in MOTHER dataframe that has breadth-adjusted popSNP ct by LoPthruTP2
+df_popSNP_ct_perMAG_byLOPthruTP2_mothers_5ct<-read.csv('230311_popSNP_ct_perMAG_byLOPthruTP2_Taxa5ct_mothers.csv',
+                                                       sep=",",
+                                                       header = T)
+df_popSNP_ct_perMAG_byLOPthruTP2_mothers_5ct$Taxa <- factor(df_popSNP_ct_perMAG_byLOPthruTP2_mothers_5ct$Taxa, levels = c("Acutalibacteraceae bacterium","Phocaeicola vulgatus","[Ruminococcus] torques","Lachnospiraceae bacterium","Faecalibacterium prausnitzii","Oscillospiraceae bacterium","Bacteroides uniformis","Blautia massiliensis","Anaerostipes hadrus","Clostridium sp.","Bifidobacterium longum","Parabacteroides distasonis","Collinsella sp.","Dorea longicatena","Coprococcus comes","Alistipes putredinis","Blautia sp.","Agathobacter rectalis","Anaerobutyricum hallii","Bifidobacterium adolescentis","Ruminococcus sp."))
+
+#PLOT: MOTHERS
+plot_popSNPs_byLOPthruTP2_ALLtaxa_mothers_barebones <- ggplot(data=df_popSNP_ct_perMAG_byLOPthruTP2_mothers_5ct, aes(x=LoPthruTP2, y=Aggregate_Adjusted_popSNP_Count)) +
+  geom_point(aes(color=Individual), size=1.5, position=position_jitter(h=0.3,w=0.02, seed=8), alpha=0.5)+
+  geom_smooth(method = 'lm', se=FALSE, color="black", size=0.5)+
+  stat_regline_equation(aes(label =  paste(..rr.label.., sep = "~~~~")), size = 4)+
+  xlab("Duration of persistence")+
+  ylab("popSNPs accrued")+
+  ggtitle("MOTHERS: popSNP Accumulation by Time")+
+  theme_bw()+
+  theme(axis.text=element_text(size=12,face="bold"), axis.title=element_text(size=13,face="bold"), panel.grid.minor=element_blank(), legend.title=element_blank(), plot.title=element_text(size=15,face="bold",hjust=0.5), panel.grid.major=element_blank(), panel.border=element_rect(colour="black",size=1))
+
+plot_popSNPs_byLOPthruTP2_ALLtaxa_mothers_barebones + facet_wrap(~ Taxa, ncol=5, scales='free') + theme(strip.text.x = element_text(face = "bold"))
+
+</pre>
+
+# Supplementary Figure 11A
+
+<pre>
+#------------------------Suppl Figure 11A1: Aggregate popSNP by Length of persistence - Mothers, linear regression------------------------
+
+library(ggplot2)
+library(ggprism)
+library(ggpubr)
+
+#MOTHERS: ALL TAXA: Breadth-adjusted Aggregate popSNP ct by LoPthruTP2 (230311_02.1_Mother_breadth-adjAGGREGATEpopSNP_alltaxa.pdf)
+
+df_popSNP_ct_perMAG_byLOPthruTP2_mothers_alltaxa<-read.csv('230314_popSNP_ct_perMAG_byLOPthruTP2_mothers_gs.csv',
+                                                   sep=",",
+                                                   header = T)
+  
+ggplot(data=df_popSNP_ct_perMAG_byLOPthruTP2_mothers_alltaxa, aes(x=LoPthruTP2, y=Aggregate_Adjusted_popSNP_Count)) +
+  geom_point(size=1, position=position_jitter(h=0.2,w=0.01, seed=7), alpha=0.25, fill="black")+
+  geom_smooth(method = 'lm', color="black", fill="#996666")+
+  stat_regline_equation(aes(label =  paste(..eq.label..,..rr.label.., sep = "~~~~")),label.x = c(0.02), label.y = c(35.25), size = 4.75)+
+  scale_x_continuous(limits=c(-.02,3.1), expand=c(0,0), guide = guide_prism_minor())+
+  scale_y_continuous(limits=c(-0.5,40), expand=c(0,0), guide = guide_prism_minor())+
+  annotate("text",x=0.41,y=38,label="n = 330 MAGs (130 taxa)", size=4.75)+
+  #annotate("text",x=0.4,y=45.75,label="n = 140 MAGs (21 taxa with > 4 persisting MAGs)")+
+  xlab("Length of persistence")+
+  ylab("Aggregate popSNPs since seeding")+
+  ggtitle("Generalized mutation rate in mothers (Local regression)")+
+  theme_bw()+
+  theme(axis.text=element_text(size=14,face="bold"), axis.title=element_text(size=14,face="bold"), panel.grid.minor=element_blank(), legend.title=element_blank(), plot.title=element_text(size=19,face="bold",hjust=0.5), panel.grid.major=element_blank(), panel.border=element_rect(colour="black",size=1))
+
+
+#------------------------Suppl Figure 11A2: Aggregate popSNP by Length of persistence - Infants, linear regression------------------------
+
+#INFANTS: ALL TAXA: Breadth-adjusted Aggregate popSNP ct by LoPthruTP2 (230311_01.1_Infant_breadth-adjAGGREGATEpopSNP_alltaxa.pdf)
+df_popSNP_ct_perMAG_byLOPthruTP2_infants_alltaxa<-read.csv('230314_popSNP_ct_perMAG_byLOPthruTP2_infants_gs.csv', sep=",", header = T)
+
+ggplot(data=df_popSNP_ct_perMAG_byLOPthruTP2_infants_alltaxa, aes(x=LoPthruTP2, y=Aggregate_Adjusted_popSNP_Count)) +
+  #geom_point(size=1.5, alpha=0.5, fill="black")+
+  geom_point(shape=21, size=1, position=position_jitter(h=0.3,w=0.025), alpha=0.25, fill="black")+
+  geom_smooth(method = 'lm', color="black", fill="#996666")+
+  stat_regline_equation(aes(label =  paste(..eq.label..,..rr.label.., sep = "~~~~")),label.x = c(0.05), label.y = c(119), size = 4.75)+
+  scale_x_continuous(limits=c(-.085,8), expand=c(0,0), guide = guide_prism_minor())+
+  scale_y_continuous(limits=c(-2,135), expand=c(0,0), guide = guide_prism_minor())+
+  annotate("text",x=1.07,y=128,label="n = 763 MAGs (194 taxa)", size = 4.75)+
+  xlab("Length of persistence")+
+  ylab("Aggregate popSNPs since seeding")+
+  ggtitle("Generalized mutation rate in infants (Linear regression)")+
+  theme_bw()+
+  theme(axis.text=element_text(size=14,face="bold"), axis.title=element_text(size=14,face="bold"), panel.grid.minor=element_blank(), legend.title=element_blank(), plot.title=element_text(size=19,face="bold",hjust=0.5), panel.grid.major=element_blank(), panel.border=element_rect(colour="black",size=1))
+
+</pre>
+
+# Supplementary Figure 11B
+
+<pre>
+#------------------------Suppl Figure 11B1: Aggregate popSNP by Length of persistence - Mothers, local regression------------------------
+
+library(ggplot2)
+library(ggprism)
+library(ggpubr)
+
+#MOTHERS: ALL TAXA: Breadth-adjusted Aggregate popSNP ct by LoPthruTP2 (230311_02.1_Mother_breadth-adjAGGREGATEpopSNP_alltaxa.pdf)
+
+df_popSNP_ct_perMAG_byLOPthruTP2_mothers_alltaxa<-read.csv('230314_popSNP_ct_perMAG_byLOPthruTP2_mothers_gs.csv',
+                                                   sep=",",
+                                                   header = T)
+ggplot(data=df_popSNP_ct_perMAG_byLOPthruTP2_mothers_alltaxa, aes(x=LoPthruTP2, y=Aggregate_Adjusted_popSNP_Count)) +
+  geom_point(size=1, position=position_jitter(h=0.2,w=0.01, seed=7), alpha=0.25, fill="black")+
+  geom_smooth(method = 'loess', color="black", fill="#3366CC")+
+  scale_x_continuous(limits=c(-.02,3.1), expand=c(0,0), guide = guide_prism_minor())+
+  scale_y_continuous(limits=c(-0.5,40), expand=c(0,0), guide = guide_prism_minor())+
+  annotate("text",x=0.41,y=38,label="n = 330 MAGs (130 taxa)", size=4.75)+
+  xlab("Length of persistence")+
+  ylab("Aggregate popSNPs since seeding")+
+  ggtitle("Generalized mutation rate in mothers (Local regression)")+
+  theme_bw()+
+  theme(axis.text=element_text(size=14,face="bold"), axis.title=element_text(size=14,face="bold"), panel.grid.minor=element_blank(), legend.title=element_blank(), plot.title=element_text(size=19,face="bold",hjust=0.5), panel.grid.major=element_blank(), panel.border=element_rect(colour="black",size=1))
+
+#------------------------Suppl Figure 11B2: Aggregate popSNP by Length of persistence - Infants, local regression------------------------
+
+
+#INFANTS: ALL TAXA: Breadth-adjusted Aggregate popSNP ct by LoPthruTP2 (230311_01.1_Infant_breadth-adjAGGREGATEpopSNP_alltaxa.pdf)
+df_popSNP_ct_perMAG_byLOPthruTP2_infants_alltaxa<-read.csv('230314_popSNP_ct_perMAG_byLOPthruTP2_infants_gs.csv', sep=",", header = T)
+
+ggplot(data=df_popSNP_ct_perMAG_byLOPthruTP2_infants_alltaxa, aes(x=LoPthruTP2, y=Aggregate_Adjusted_popSNP_Count)) +
+  geom_point(shape=21, size=1, position=position_jitter(h=0.3,w=0.025), alpha=0.25, fill="black")+
+  geom_smooth(method = 'loess', color="black", fill="#3366CC")+
+  scale_x_continuous(limits=c(-.085,8), expand=c(0,0), guide = guide_prism_minor())+
+  scale_y_continuous(limits=c(-2,135), expand=c(0,0), guide = guide_prism_minor())+
+  annotate("text",x=1.07,y=128,label="n = 763 MAGs (194 taxa)", size = 4.75)+
+  xlab("Length of persistence")+
+  ylab("Aggregate popSNPs since seeding")+
+  ggtitle("Generalized mutation rate in infants (Local regression)")+
+  theme_bw()+
+  theme(axis.text=element_text(size=14,face="bold"), axis.title=element_text(size=14,face="bold"), panel.grid.minor=element_blank(), legend.title=element_blank(), plot.title=element_text(size=19,face="bold",hjust=0.5), panel.grid.major=element_blank(), panel.border=element_rect(colour="black",size=1))
+
+</pre>
+
+# Supplementary Figure 12
+
+Made in Prism 9.
+
+# Supplementary Figure 13
+
+<pre>
+#------------------------Suppl Figure 13: Boxplot comparing Bray-Curtis distance between Pre-Weaning, Post-Weaning, and Mother mutated gene COG profiles, split by family------------------------
+
+#read in boxplot csv
+df_pairwise_boxplot<-read.csv('230322_bray_pairwise_boxplot_2groups.csv',
+                              sep=",",
+                              header = T)
+
+library(ggplot2)
+library(ggpubr)
+library(ggprism)
+
+df_pairwise_boxplot$Comparison_type___Family <- factor(df_pairwise_boxplot$Comparison_type___Family,levels = c("before___mother___same","before___mother___different","after___mother___same","after___mother___different"))
+df_pairwise_boxplot$Family <- factor(df_pairwise_boxplot$Family,levels = c("Same","Different"))
+df_pairwise_boxplot$Weaning <- factor(df_pairwise_boxplot$Weaning,levels = c("Pre","Post"))
+
+ggplot(df_pairwise_boxplot, aes(Weaning, Bray_Curtis_distance)) +
+  geom_boxplot(aes(colour = Family), outlier.shape = NA, lwd=0.75)+
+  geom_point(aes(fill = Family, shape = Weaning), size = 5, alpha=0.75, position = position_jitterdodge(jitter.width = 0.75, jitter.height = 0, seed=10))+
+  scale_x_discrete(labels=c("Pre-Weaning Infant vs. Mother","Post-Weaning Infant vs. Mother"))+
+  scale_color_manual(values=c("#ED774D","#263C57"))+
+  scale_fill_manual(values=c("#ED774D","#263C57"))+
+  scale_shape_manual(values=c(21, 23))+
+  ylab("Bray-Curtis dissimilarity")+
+  ggtitle("Distance between COG functional profiles of mutated genes")+
+  stat_compare_means(method = "kruskal.test", aes(group = Family), label = "p.signif", label.y = 0.45)+
+  theme_bw()+
+  theme(plot.title=element_text(size=17,face="bold", hjust=0.5), axis.title.x=element_blank(), axis.title.y=element_text(size=13, face="bold"), axis.text = element_text(face = "bold",size = 12), legend.title=element_text(face="bold"), legend.text=element_text(face="bold"), panel.border=element_rect(colour="black",fill=NA,size=1), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+  theme(axis.title=element_text(size=14,face="bold"), axis.text=element_blank(), axis.ticks=element_blank(), panel.border=element_rect(colour="black",fill=NA,size=1), panel.grid.major = element_blank(), panel.grid.minor = element_blank(), legend.title=element_text(face="bold"), legend.text=element_text(face="bold"), plot.title = element_text(hjust = 0.25,size=16,face="bold"))
+
+</pre>
+
