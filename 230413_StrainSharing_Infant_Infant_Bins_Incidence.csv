@@ -1,0 +1,49 @@
+﻿Bin,MOL,MOL_elapsed,Bin_MOL,Taxa,Count,Incidence,Incidence_per_individual
+1,6,0-6,1 (MOL 6),Bifidobacteriaceae,24,4,0.2
+1,6,0-6,1 (MOL 6),Lachnospiraceae,16,2.666666667,0.133333333
+1,6,0-6,1 (MOL 6),Bacteroidales,15,2.5,0.125
+1,6,0-6,1 (MOL 6),Enterococcaceae,9,1.5,0.075
+1,6,0-6,1 (MOL 6),Erysipelotrichales,7,1.166666667,0.058333333
+1,6,0-6,1 (MOL 6),Oscillospiraceae,2,0.333333333,0.016666667
+1,6,0-6,1 (MOL 6),Other Eubacteriales,5,0.833333333,0.041666667
+1,6,0-6,1 (MOL 6),Other,24,4,0.2
+2,9,6-9,2 (MOL 9),Bifidobacteriaceae,3,1,0.05
+2,9,6-9,2 (MOL 9),Lachnospiraceae,10,3.333333333,0.166666667
+2,9,6-9,2 (MOL 9),Bacteroidales,7,2.333333333,0.116666667
+2,9,6-9,2 (MOL 9),Enterococcaceae,4,1.333333333,0.066666667
+2,9,6-9,2 (MOL 9),Erysipelotrichales,6,2,0.1
+2,9,6-9,2 (MOL 9),Oscillospiraceae,11,3.666666667,0.183333333
+2,9,6-9,2 (MOL 9),Other Eubacteriales,8,2.666666667,0.133333333
+2,9,6-9,2 (MOL 9),Other,6,2,0.1
+3,12,9-12,3 (MOL 12),Bifidobacteriaceae,3,1,0.05
+3,12,9-12,3 (MOL 12),Lachnospiraceae,23,7.666666667,0.383333333
+3,12,9-12,3 (MOL 12),Bacteroidales,7,2.333333333,0.116666667
+3,12,9-12,3 (MOL 12),Enterococcaceae,0,0,0
+3,12,9-12,3 (MOL 12),Erysipelotrichales,5,1.666666667,0.083333333
+3,12,9-12,3 (MOL 12),Oscillospiraceae,4,1.333333333,0.066666667
+3,12,9-12,3 (MOL 12),Other Eubacteriales,10,3.333333333,0.166666667
+3,12,9-12,3 (MOL 12),Other,10,3.333333333,0.166666667
+4,15,12-15,4 (MOL 15),Bifidobacteriaceae,0,0,0
+4,15,12-15,4 (MOL 15),Lachnospiraceae,16,5.333333333,0.266666667
+4,15,12-15,4 (MOL 15),Bacteroidales,4,1.333333333,0.066666667
+4,15,12-15,4 (MOL 15),Enterococcaceae,2,0.666666667,0.033333333
+4,15,12-15,4 (MOL 15),Erysipelotrichales,0,0,0
+4,15,12-15,4 (MOL 15),Oscillospiraceae,2,0.666666667,0.033333333
+4,15,12-15,4 (MOL 15),Other Eubacteriales,3,1,0.05
+4,15,12-15,4 (MOL 15),Other,4,1.333333333,0.066666667
+5,36,15-36,5 (MOL 36),Bifidobacteriaceae,3,0.142857143,0.007142857
+5,36,15-36,5 (MOL 36),Lachnospiraceae,22,1.047619048,0.052380952
+5,36,15-36,5 (MOL 36),Bacteroidales,14,0.666666667,0.033333333
+5,36,15-36,5 (MOL 36),Enterococcaceae,1,0.047619048,0.002380952
+5,36,15-36,5 (MOL 36),Erysipelotrichales,5,0.238095238,0.011904762
+5,36,15-36,5 (MOL 36),Oscillospiraceae,22,1.047619048,0.052380952
+5,36,15-36,5 (MOL 36),Other Eubacteriales,12,0.571428571,0.028571429
+5,36,15-36,5 (MOL 36),Other,13,0.619047619,0.030952381
+6,94,36-94,6 (MOL 94),Bifidobacteriaceae,2,0.034482759,0.001724138
+6,94,36-94,6 (MOL 94),Lachnospiraceae,10,0.172413793,0.00862069
+6,94,36-94,6 (MOL 94),Bacteroidales,13,0.224137931,0.011206897
+6,94,36-94,6 (MOL 94),Enterococcaceae,0,0,0
+6,94,36-94,6 (MOL 94),Erysipelotrichales,0,0,0
+6,94,36-94,6 (MOL 94),Oscillospiraceae,6,0.103448276,0.005172414
+6,94,36-94,6 (MOL 94),Other Eubacteriales,4,0.068965517,0.003448276
+6,94,36-94,6 (MOL 94),Other,6,0.103448276,0.005172414

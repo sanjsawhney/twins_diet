@@ -1,0 +1,7 @@
+﻿Group,Assembly_Type,Percent
+All MAGs,MetaSPAdes (SR),62.6
+All MAGs,MetaFlye2 (LR),37.4
+Quality-Filtered (HQ or MQ),MetaSPAdes (SR),64.9
+Quality-Filtered (HQ or MQ),MetaFlye2 (LR),35.1
+dRep Winners,MetaSPAdes (SR),78.75
+dRep Winners,MetaFlye2 (LR),21.25

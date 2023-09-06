@@ -1,0 +1,8 @@
+Category,Axis.1,Axis.2,Axis.3,Diet,Weaning,Ellipse
+Breastfed_afterWeaning,0.069914347,0.000745881,-0.061902074,Breastfed,After,After
+Breastfed_beforeWeaning,-0.080715612,0.147496533,-0.000503829,Breastfed,Before,Before
+Formula_afterWeaning,0.056672454,-0.001072269,-0.004907527,Formula,After,After
+Formula_beforeWeaning,-0.055962154,-0.098021373,-0.05281718,Formula,Before,Before
+Intermediate_afterWeaning,0.111915365,-0.019840146,0.082650249,Intermediate,After,After
+Intermediate_beforeWeaning,-0.135407534,-0.057003732,0.052659749,Intermediate,Before,Before
+Mother,0.033583133,0.027695106,-0.015179389,Mother,Mother,
