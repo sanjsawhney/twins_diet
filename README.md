@@ -1,6 +1,10 @@
 # twins_diet
 Code used for data visualization and analysis in Sawhney et al (Weaning accelerates and transforms within-host adaptation in the infant gut microbiome).
 
+# Figure 3A
+
+Made in Biorender.com
+
 # Figure 3B
 
 <pre>
@@ -100,7 +104,6 @@ boxplot_dRep_MAG_completeness<-ggplot(df_dRep_MAG_metrics, aes(x=Group, y=Comple
   #geom_boxplot(width=0.5, outlier.size=0.3, position = position_dodge(0.65))+
   geom_boxplot(width=0.5, outlier.size=0.3, lwd=0.7)+
   scale_x_discrete(labels = c("MQ","HQ","Ref."))+
- # scale_y_continuous(limits=c(30,100),expand = c(0,3))+
   scale_y_continuous(limits=c(30,107), expand = c(0,0), breaks=c(40,60,80,100))+
   scale_fill_manual(values=c("#3399FF", "#33FF99", "#FF9900"))+
   theme(axis.title.y=element_blank())+
@@ -110,7 +113,6 @@ boxplot_dRep_MAG_completeness<-ggplot(df_dRep_MAG_metrics, aes(x=Group, y=Comple
   theme_bw()+
   stat_compare_means(comparisons = my_comparisons, hide.ns = FALSE, label = "p.signif", test = "kruskal.test", tip.length = 0.005, label.y = c(98,99.5,101.5), vjust=.75, size =5)+
   theme(legend.position='none',panel.border = element_rect(color = "black", size=1),axis.ticks = element_line(colour = "black", size = 0.7), axis.title = element_blank(),axis.text = element_text(size = 24, face="bold"),panel.grid.major = element_blank(), panel.grid.minor = element_blank())
- # theme(legend.position='none', axis.title.x = element_blank(),axis.title.y = element_text(face="bold", size=24),axis.text.x = element_text(size = 16, face="bold"),axis.text.y = element_text(face="bold",size = 16),panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 boxplot_dRep_MAG_completeness
 
@@ -135,7 +137,6 @@ boxplot_dRep_MAG_contamination<-ggplot(df_dRep_MAG_metrics, aes(x=Group, y=Conta
   #geom_boxplot(width=0.5, outlier.size=0.3, position = position_dodge(0.65))+
   geom_boxplot(width=0.5, outlier.size=0.3, lwd=0.7)+
   scale_x_discrete(labels = c("MQ","HQ","Ref."))+
-#  scale_y_continuous(limits=c(0,10),expand = c(0,0.2))+
   scale_y_continuous(limits=c(0,12.55), expand = c(0,0.2), breaks=c(0.0,2.5,5.0,7.5,10.0,12.5))+
   scale_fill_manual(values=c("#3399FF", "#33FF99", "#FF9900"))+
   theme(axis.title.y=element_blank())+
@@ -145,7 +146,6 @@ boxplot_dRep_MAG_contamination<-ggplot(df_dRep_MAG_metrics, aes(x=Group, y=Conta
   theme_bw()+
   stat_compare_means(comparisons = my_comparisons, hide.ns = TRUE, label = "p.signif", test = "kruskal.test", tip.length = 0.005, label.y = c(11,11.4,11.8), vjust=.75, size =5)+
   theme(legend.position='none',panel.border = element_rect(color = "black", size=1),axis.ticks = element_line(colour = "black", size = 0.7), axis.title = element_blank(),axis.text = element_text(size = 24, face="bold"),panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-  #theme(legend.position='none', axis.title.x = element_blank(),axis.title.y = element_text(face="bold", size=24),axis.text.x = element_text(size = 16, face="bold"),axis.text.y = element_text(face="bold",size = 16),panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 boxplot_dRep_MAG_contamination
 
@@ -180,7 +180,6 @@ boxplot_dRep_MAG_het<-ggplot(df_dRep_MAG_metrics, aes(x=Group, y=Strain_Heteroge
   theme_bw()+
   stat_compare_means(comparisons = my_comparisons, hide.ns = FALSE, label = "p.signif", test = "kruskal.test", tip.length = 0.005, label.y = c(97,100,103), vjust=.75, size =5)+
   theme(legend.position='none',panel.border = element_rect(color = "black", size=1),axis.ticks = element_line(colour = "black", size = 0.7), axis.title = element_blank(),axis.text = element_text(size = 24, face="bold"),panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-#  theme(legend.position='none', axis.title.x = element_blank(),axis.title.y = element_text(face="bold", size=24),axis.text.x = element_text(size = 16, face="bold"),axis.text.y = element_text(face="bold",size = 16),panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 boxplot_dRep_MAG_het
   
@@ -219,7 +218,6 @@ boxplot_dRep_MAG_N50<-ggplot(df_dRep_MAG_metrics, aes(x=Group, y=log10(N50), fil
   labs(y="N50 (log)")+
   stat_compare_means(comparisons = my_comparisons, hide.ns = TRUE, label = "p.signif", test = "kruskal.test", tip.length = 0.005, label.y = c(6.7,6.82,6.94), vjust=.75, size =5)+
   theme(legend.position='none',panel.border = element_rect(color = "black", size=1),axis.ticks = element_line(colour = "black", size = 0.7), axis.title = element_blank(),axis.text = element_text(size = 24, face="bold"),panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-#  theme(legend.position='none', axis.title.x = element_blank(),axis.title.y = element_text(face="bold", size=24),axis.text.x = element_text(size = 16, face="bold"),axis.text.y = element_text(face="bold",size = 16),panel.grid.major = element_blank(), panel.grid.minor = element_blank(),plot.margin = margin(10,3,3,5))
 
 boxplot_dRep_MAG_N50
   
@@ -257,12 +255,73 @@ boxplot_dRep_MAG_contig_count<-ggplot(df_dRep_MAG_metrics, aes(x=Group, y=log10(
   theme_bw()+
   stat_compare_means(comparisons = my_comparisons, hide.ns = TRUE, label = "p.signif", test = "kruskal.test", tip.length = 0.005, label.y = c(3.1,3.2,3.3), vjust=.75, size =5)+
   theme(legend.position='none',panel.border = element_rect(color = "black", size=1),axis.ticks = element_line(colour = "black", size = 0.7), axis.title = element_blank(),axis.text = element_text(size = 24, face="bold"),panel.grid.major = element_blank(), panel.grid.minor = element_blank())
- # theme(legend.position='none', axis.title.x = element_blank(),axis.title.y = element_text(face="bold", size=24),axis.text.x = element_text(size = 16, face="bold"),axis.text.y = element_text(size = 16,face="bold"),panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 boxplot_dRep_MAG_contig_count
 
 </pre>
 
+# Figure 4A
+
+Made in https://itol.embl.de/
+
+# Figure 4B
+
+<pre>
+#------------------------Figure 4B: Infant vs. Mother: Stool, RG, Persisting RG------------------------
+library(ggplot2)
+library(ggprism)
+
+df_infant_vs_mother<-read.csv('230412_Infant_vs_Mother_Stool_RG_Persisting.csv',
+                                        sep=",",
+                                        header = T)
+
+
+df_infant_vs_mother$Group <- factor(df_infant_vs_mother$Group, levels = c("Mother","Infant"))
+df_infant_vs_mother$Comparison <- factor(df_infant_vs_mother$Comparison, levels = c("Stool","RGs","Persisting RGs"))
+
+#Plot
+ggplot(data=df_infant_vs_mother, aes(x=Comparison, y=Percentage, fill=Group)) +
+  geom_bar(stat="identity",width=0.45, color="black")+
+  theme_bw()+
+ # facet_wrap( ~ Comparison)+
+  scale_fill_manual(values=c("black", "#F9DA78"))+
+  scale_x_discrete(labels=c("Stool" = "Stool\n(n=214)", "RGs" = "RGs\n(n=3,995)","Persisting RGs" = "Persisting\nRGs (n=1,093)"))+
+  scale_y_continuous(limits=c(0,100), expand=c(0,0), guide = guide_prism_minor())+
+  ylab("Percentage")+
+  theme(axis.text = element_text(size=11, face="bold"), plot.title = element_text(size=13, face="bold", hjust=0.5), axis.title.y = element_text(size=13, face="bold"), axis.title.x = element_blank(), legend.title = element_text(face = "bold"), legend.text = element_text(face = "bold"), legend.position="bottom", panel.grid.minor = element_blank(), panel.grid.major = element_blank(), panel.border = element_rect(colour = "black", size=1))
+
+</pre>
+
+# Supplementary Figure 1
+
+<pre>
+
+#------------------------Suppl Figure 1: Sampling schematic------------------------
+
+library(ggplot2)
+
+df_sampling<-read.csv('230802_sampling_timelines.csv',
+                      sep=",",
+                      header = T)
+
+df_sampling$MOL <- as.numeric(df_sampling$MOL)
+df_sampling$Individual <- as.factor(df_sampling$Individual)
+df_sampling$Individual <- factor(df_sampling$Individual, levels = c("48-2","48-1","47-2","47-1","45-2","45-1","44-2","44-1","43-2","43-1","40-2","40-1","39-2","39-1","37-2","37-1","30-2","30-1","29-2","29-1","28-2","28-1","27-2","27-1","25-2","25-1","24-2","24-1","21-2","21-1","20-2","20-1","19-2","19-1","18-2","18-1","17-2","17-1","16-2","16-1","14-2","14-1","13-2","13-1","12-2","12-1","10-2","10-1","08-2","08-1","06-2","06-1","C048","C047","C045","C044","C043","C040","C039","C037","C030","C029","C028","C027","C025","C024","C021","C020","C019","C018","C017","C016","C014","C013","C012","C010","C008","C006"))
+df_sampling$Cohort_sequencing <- factor(df_sampling$Cohort_sequencing, levels = c("shallow shotgun","extended"))
+
+#Plot
+ggplot(data=df_sampling, aes(x=MOL, y=Individual)) +
+  geom_line()+
+  geom_point(shape=21, aes(color=Cohort_sequencing, fill=Cohort_sequencing))+
+  scale_color_manual(values=c("black", "black"))+
+  scale_fill_manual(values=c("gray", "black"))+
+  xlab("Months post childbirth")+
+  guides(fill=guide_legend(title="Sequencing type"))+
+  theme_bw()+
+  theme(axis.text.x = element_text(size=14, face="bold"), axis.text.y = element_text(size=8, face="bold"), plot.title=element_blank(), axis.title=element_text(size=14, face="bold"), panel.border = element_rect(colour = "black", size=0.75))
+
+</pre>
+  
 # Supplementary Figure 4
 <pre>
 library(ggplot2)
@@ -327,9 +386,113 @@ MQN50_MAGs
 
 </pre>
 
+# Supplementary Figure 5A
+
+<pre>
+
+  #--------------------------Suppl Figure 5A: 220227 pre dRep MOL MAG Count--------------------------
+library(ggplot2)
+library(RColorBrewer)
+
+#Read in csv
+df_MOL_count <- read.csv('220227_pre-dRep_MOL_MAG_count.csv',
+                         sep=",",
+                         header = T)
+
+#Plot
+ggplot(data=df_MOL_count, aes(x=MOL,y=Count))+
+  geom_point()+
+  geom_smooth(span=1)+
+  theme_bw()+
+  ggtitle("Putative Genome Count per Sample by MOL") +
+  xlab("MOL")+
+  ylab("Putative Genome Count")+
+  theme(plot.title = element_text(face="bold",hjust = 0.5))+
+  theme(axis.title.x = element_text(face="bold"),axis.title.y = element_text(face="bold"))
+
+</pre>
+
+# Supplementary Figure 5B
+
+<pre>
+#--------------------------Suppl Figure 5B: 220227 pre dRep Timepoint MAG Count (Infant Fraction)--------------------------
+#Read in CSV
+df_MAG_timepoint_infants<-read.csv('220227_pre-dRep_MAG_Fraction_Timepoint_Infants.csv',
+                             sep=",",
+                             header = T)
+df_MAG_timepoint_infants$Timepoint<-factor(df_MAG_timepoint_infants$Timepoint, levels=c("1","2","3","4","5","6"))
+
+barplot_MAG_timepoint_infants <- ggplot(data=df_MAG_timepoint_infants, aes(x=Timepoint, y=Fraction)) +
+  geom_bar(stat="identity",fill="#CCCCFF", color="black", width=0.7)+
+  geom_errorbar(aes(ymin=Fraction-StdDev, ymax=Fraction+StdDev), width=.2)+
+  scale_y_continuous(limits=c(0,.31),expand = c(0,0))+
+  labs(title="Infant",y="Fraction of All (pre-dRep)\nMAGs Per Individual")+
+  theme_classic()+
+  theme(axis.title = element_text(face="bold", size=14),axis.text.x = element_text(size = 12, face="bold"),plot.title = element_text(face="bold",size=16,hjust = 0.5))
+
+barplot_MAG_timepoint_infants
+
+  </pre>
+  
+# Supplementary Figure 5C
+
+<pre>
+#--------------------------Suppl Figure 5C: 220227 pre dRep Timepoint MAG Count (Maternal Fraction)--------------------------
+#Read in CSV
+df_MAG_timepoint_mothers<-read.csv('220227_pre-dRep_MAG_Fraction_Timepoint_Mothers.csv',
+                           sep=",",
+                           header = T)
+df_MAG_timepoint_mothers$Timepoint<-factor(df_MAG_timepoint_mothers$Timepoint, levels=c("1","2","3","4"))
+
+barplot_MAG_timepoint_mothers <- ggplot(data=df_MAG_timepoint_mothers, aes(x=Timepoint, y=Fraction)) +
+  geom_bar(stat="identity",fill="#CCCCFF", color="black", width=0.7)+
+  geom_errorbar(aes(ymin=Fraction-StdDev, ymax=Fraction+StdDev), width=.2)+
+  scale_y_continuous(limits=c(0,.4),expand = c(0,0))+
+  labs(title="Maternal",y="Fraction of All (pre-dRep)\nMAGs Per Individual")+
+  theme_classic()+
+  theme(axis.title = element_text(face="bold", size=14),axis.text.x = element_text(size = 12, face="bold"),plot.title = element_text(face="bold",size=16,hjust = 0.5))
+
+barplot_MAG_timepoint_mothers
+
+</pre>
+  
+# Supplementary Figure 5D
+
+<pre>
+#--------------------------Suppl Figure 5D: 220301 pre-dRep MAG Count by # of Samples (All vs Filtered)--------------------------
+#Read in CSV
+df_pre_dRep_MAG_ct_vs<-read.csv('220301_pre-dRep_MAG_Count_Filtered.csv',
+                             sep=",",
+                             header = T)
+df_pre_dRep_MAG_ct_vs$Timepoints<-factor(df_pre_dRep_MAG_ct_vs$Timepoints, levels=c("3", "4", "6-7","19-21"))
+
+library(ggplot2)
+library(ggpubr)
+
+#Plot
+boxplot_pre_dRep_MAG_ct_vs<-ggplot(df_pre_dRep_MAG_ct_vs, aes(x=Timepoints, y=MAG_Count, fill=Group))+
+  #remove position=position_dodge() if not showing grouped boxplot
+  geom_boxplot(width=0.5, outlier.shape=NA, position = position_dodge(0.65))+
+  #geom_boxplot(width=0.5, outlier.size=0.3)+
+  scale_x_discrete(labels = c("3\n(2 mothers)","4\n(8 mothers)","6-7\n(16 infants)","19-21\n(4 infants)"))+
+  scale_fill_manual(values=c("#F8766D", "#00BA38"))+
+  scale_y_continuous(limits=c(0,1500),expand = c(0,0))+
+  geom_jitter(shape=16, size =0.85, position=position_jitterdodge(.2))+
+  #Only include for Assembly Source grouping
+  theme(axis.title.y=element_blank())+
+  #Remove fill= if not showing grouped boxplot
+  labs(x="Number of Samples",y="MAG count per individual")+
+  theme_bw()+
+  theme(legend.position='top', axis.title = element_text(face="bold", size=14),axis.text.x = element_text(size = 8, face="bold"))
+
+boxplot_pre_dRep_MAG_ct_vs
+ </pre>
+
 # Supplementary Figure 5E
 
 <pre>
+  #--------------------------Suppl Figure 5E: 220620 Number of MAGs per dRep Winner bin--------------------------
+
   #Read in CSV
 df_MAGs_per_dRep_Winner<-read.csv('220620_MAGs_per_dRep_Winner.csv',
                              sep=",",
@@ -345,3 +508,154 @@ barplot_MAGs_per_dRep_Winner <- ggplot(data=df_MAGs_per_dRep_Winner, aes(x=MAGs_
 
 barplot_MAGs_per_dRep_Winner
   </pre>
+
+# Supplementary Figure 5F
+
+<pre>
+#--------------------------Suppl Figure 5F: 220227 pre vs. post dRep MAG Count--------------------------
+library(ggplot2)
+library(RColorBrewer)
+
+#Read in csv
+df_MAG_count <- read.csv('220227_pre-vs-post_dRep_MAG_count.csv',
+                            sep=",",
+                            header = T)
+
+#Make lineage barplot
+ggplot(data=df_MAG_count, aes(x=pre_dRep,y=post_dRep))+
+  geom_point()+
+  geom_smooth(span=1)+
+  scale_y_continuous(limits=c(0,250),expand = c(0,0))+
+  theme_bw()+
+  ggtitle("Reduction in MAG Count Following Dereplication") +
+  xlab("Quality-filtered Putative Genomes")+
+  ylab("Reconstructed Genomes")+
+  theme(plot.title = element_text(face="bold",hjust = 0.5))+
+  theme(axis.title.x = element_text(face="bold"),axis.title.y = element_text(face="bold"))
+</pre>
+
+# Supplementary Figure 6A
+
+<pre>
+#--------------------------Suppl Figure 6A: 220228 Assembly Type Percent--------------------------
+#Read in CSV
+df_Assembly_Type<-read.csv('220228_Assembly_Type_Percent.csv',
+                              sep=",",
+                              header = T)
+df_Assembly_Type$Group<-factor(df_Assembly_Type$Group, levels=c("All MAGs", "Quality-Filtered (HQ or MQ)", "dRep Winners"))
+
+barplot_Assembly_Type <- ggplot(data=df_Assembly_Type, aes(x=Group, y=Percent, fill=Assembly_Type)) +
+  geom_bar(stat="identity", color="black", width=0.7)+
+  scale_y_continuous(limits=c(0,101),expand = c(0,0))+
+  scale_x_discrete(labels = c("All Putative Genomes","QF Putative Genomes","Reconstructed Genomes"))+
+  labs(y="Percent",fill="Assembly Type")+
+  theme_classic()+
+  theme(axis.title.x = element_blank(),axis.title.y = element_text(face="bold", size=14),axis.text.x = element_text(size = 12, face="bold",angle=315, hjust=0))
+
+barplot_Assembly_Type
+
+</pre>
+
+# Supplementary Figure 6B
+
+<pre>
+#--------------------------Suppl Figure 6B: 220228 Assembly Source Percent--------------------------
+#Read in CSV
+df_Assembly_Source<-read.csv('220228_Assembly_Source_Percent.csv',
+                           sep=",",
+                           header = T)
+df_Assembly_Source$Group<-factor(df_Assembly_Source$Group, levels=c("All MAGs", "Quality-Filtered (HQ or MQ)", "dRep Winners"))
+
+barplot_Assembly_Source <- ggplot(data=df_Assembly_Source, aes(x=Group, y=Percent, fill=Assembly_Source)) +
+  geom_bar(stat="identity", color="black", width=0.7)+
+  scale_y_continuous(limits=c(0,101),expand = c(0,0))+
+  scale_x_discrete(labels = c("All Putative Genomes","QF Putative Genomes","Reconstructed Genomes"))+
+  scale_fill_manual(values=c("#CCFFCC", "#CC9966"))+
+  labs(y="Percent",fill="Assembly Source")+
+  theme_classic()+
+  theme(axis.title.x = element_blank(),axis.title.y = element_text(face="bold", size=14),axis.text.x = element_text(size = 12, face="bold",angle=315, hjust=0))
+
+barplot_Assembly_Source
+
+</pre>
+
+# Supplementary Figure 7A
+
+<pre>
+#------------------------Suppl Figure 7A: Persisting MAGs: Number of unique, persisting MAGs of a given taxa------------------------
+
+library(ggplot2)
+library(ggprism)
+
+df_persistingMAGs_per_taxa <- data.frame(samples  = c("1","2","3","4","5","6","7","8","9","10","11","12","13-14","15-16","17-18","19-20","21-22","23-25",""," ","38"),
+                                                       count = c("73","39","19","15","12","10","4","7","10","6","5","4","4","5","4","3","0","3","0","0","1")
+)
+
+df_persistingMAGs_per_taxa$samples <- factor(df_persistingMAGs_per_taxa$samples, levels = c("1","2","3","4","5","6","7","8","9","10","11","12","13-14","15-16","17-18","19-20","21-22","23-25",""," ","38"))
+df_persistingMAGs_per_taxa$count <- as.numeric(df_persistingMAGs_per_taxa$count)
+
+ggplot(data=df_persistingMAGs_per_taxa, aes(x=samples, y=count)) +
+  geom_bar(stat="identity",width=0.75, fill="#CCCCFF", color="black", size=0.65)+
+  theme_bw()+
+  scale_y_continuous(limits=c(0,74), expand=c(0,0), guide = guide_prism_minor())+
+  xlab("Persisting MAG count")+
+  ylab("Taxa Count")+
+  ggtitle("Number of unique, persisting MAGs of a given taxon across all individuals")+
+  annotate("text",x=17.6,y=70,label="n=224 total unique taxa identifiers")+
+  theme(axis.text.x = element_text(size=9.5, face="bold", angle = 270, vjust=0.5, hjust=0), axis.text.y = element_text(size=11, face="bold"), plot.title = element_text(size=13, face="bold", hjust=0.5), axis.title = element_text(size=11.5, face="bold"), panel.grid.minor = element_blank(), panel.grid.major = element_blank(), panel.border = element_rect(colour = "black", size=1))
+
+</pre>
+
+# Supplementary Figure 7B
+
+<pre>
+#------------------------Suppl Figure 7B: Persisting MAGs: Samples within individual------------------------
+
+library(ggplot2)
+library(ggprism)
+
+df_persistingMAGs_samples_per_individual <- data.frame(samples  = c("1","2", "3", "4","5","6","7","8","9","10-15","16-21"),
+                                                       count = c("0","549","206","154","66","33","24","12","13","24","12")
+)
+
+df_persistingMAGs_samples_per_individual$samples <- factor(df_persistingMAGs_samples_per_individual$samples, levels = c("1","2", "3", "4","5","6","7","8","9","10-15","16-21"))
+df_persistingMAGs_samples_per_individual$count <- as.numeric(df_persistingMAGs_samples_per_individual$count)
+
+ggplot(data=df_persistingMAGs_samples_per_individual, aes(x=samples, y=count)) +
+  geom_bar(stat="identity",width=0.75, fill="#CCCCFF", color="black", size=0.65)+
+  theme_bw()+
+  scale_y_continuous(limits=c(0,560), expand=c(0,0), guide = guide_prism_minor())+
+  xlab("Sample Count")+
+  ylab("Persisting MAG Count")+
+  annotate("text",x=9.6,y=530,label="n=1,093 total persisting MAGs")+
+  ggtitle("Number of samples within an individual a persisting MAG is present in")+
+  theme(axis.text.x = element_text(size=9.5, face="bold"), axis.text.y = element_text(size=11, face="bold"), plot.title = element_text(size=13, face="bold", hjust=0.5), axis.title = element_text(size=11.5, face="bold"), panel.grid.minor = element_blank(), panel.grid.major = element_blank(), panel.border = element_rect(colour = "black", size=1))
+
+</pre>
+
+# Supplementary Figure 7C
+
+<pre>
+#------------------------Suppl Figure 7C: Persisting MAGs: Number of samples across individuals that carry a persisting MAG of a taxa------------------------
+
+library(ggplot2)
+library(ggprism)
+
+df_samples_w_persistingMAGs_of_a_taxa <- data.frame(samples  = c("2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21-30","31-40","41-50","51-60","61-80","81-100","101-119"),
+                                         count = c("46","12","22","11","11","9","7","7","2","7","7","3","4","3","3","5","4","1","0","20","13","9","6","6","4","2")
+)
+
+df_samples_w_persistingMAGs_of_a_taxa$samples <- factor(df_samples_w_persistingMAGs_of_a_taxa$samples, levels = c("2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21-30","31-40","41-50","51-60","61-80","81-100","101-119"))
+df_samples_w_persistingMAGs_of_a_taxa$count <- as.numeric(df_samples_w_persistingMAGs_of_a_taxa$count)
+
+ggplot(data=df_samples_w_persistingMAGs_of_a_taxa, aes(x=samples, y=count)) +
+  geom_bar(stat="identity",width=0.75, fill="#CCCCFF", color="black", size=0.65)+
+  theme_bw()+
+  scale_y_continuous(limits=c(0,50), expand=c(0,0), guide = guide_prism_minor())+
+  xlab("Sample Count")+
+  ylab("Taxa Count")+
+  annotate("text",x=21.6,y=47.5,label="n=204 samples across individuals")+
+  ggtitle("Number of samples across individuals that carry a persisting MAG of a taxon")+
+  theme(axis.text.x = element_text(size=9.5, face="bold", angle = 270, vjust=0.5, hjust=0), axis.text.y = element_text(size=11, face="bold"), plot.title = element_text(size=13, face="bold", hjust=0.5), axis.title = element_text(size=11.5, face="bold"), panel.grid.minor = element_blank(), panel.grid.major = element_blank(), panel.border = element_rect(colour = "black", size=1))
+
+</pre>
