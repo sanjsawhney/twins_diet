@@ -117,19 +117,6 @@ boxplot_dRep_MAG_completeness<-ggplot(df_dRep_MAG_metrics, aes(x=Group, y=Comple
 boxplot_dRep_MAG_completeness
 
 #--------------------------220329 MQ Winner vs. HQ Winner vs. Ref dRep 0.98  MAG Contamination--------------------------
-#Read in CSV
-df_dRep_MAG_metrics<-read.csv('220329_WinnersMQ-vs-WinnersHQ-vs-Refs_dRep_0.98_metrics.csv',
-                              sep=",",
-                              header = T)
-df_dRep_MAG_metrics$Group<-factor(df_dRep_MAG_metrics$Group, levels=c("MQ Winners", "HQ Winners", "Reference Genomes"))
-df_dRep_MAG_metrics$Completeness<-as.numeric(df_dRep_MAG_metrics$Completeness)
-df_dRep_MAG_metrics$Contamination<-as.numeric(df_dRep_MAG_metrics$Contamination)
-df_dRep_MAG_metrics$Strain_Heterogeneity<-as.numeric(df_dRep_MAG_metrics$Strain_Heterogeneity)
-df_dRep_MAG_metrics$N50<-as.numeric(df_dRep_MAG_metrics$N50)
-df_dRep_MAG_metrics$Contig_count<-as.numeric(df_dRep_MAG_metrics$Contig_count)
-
-library(ggplot2)
-library(ggpubr)
 
 #Contamination Boxplot (change or remove fill= to bin by SR vs LR, Plate vs Stool, no bin)
 boxplot_dRep_MAG_contamination<-ggplot(df_dRep_MAG_metrics, aes(x=Group, y=Contamination, fill=Group))+  
@@ -150,19 +137,6 @@ boxplot_dRep_MAG_contamination<-ggplot(df_dRep_MAG_metrics, aes(x=Group, y=Conta
 boxplot_dRep_MAG_contamination
 
 #--------------------------220329 MQ Winner vs. HQ Winner vs. Ref dRep 0.98  MAG Strain Heterogeneity--------------------------
-#Read in CSV
-df_dRep_MAG_metrics<-read.csv('220329_WinnersMQ-vs-WinnersHQ-vs-Refs_dRep_0.98_metrics.csv',
-                              sep=",",
-                              header = T)
-df_dRep_MAG_metrics$Group<-factor(df_dRep_MAG_metrics$Group, levels=c("MQ Winners", "HQ Winners", "Reference Genomes"))
-df_dRep_MAG_metrics$Completeness<-as.numeric(df_dRep_MAG_metrics$Completeness)
-df_dRep_MAG_metrics$Contamination<-as.numeric(df_dRep_MAG_metrics$Contamination)
-df_dRep_MAG_metrics$Strain_Heterogeneity<-as.numeric(df_dRep_MAG_metrics$Strain_Heterogeneity)
-df_dRep_MAG_metrics$N50<-as.numeric(df_dRep_MAG_metrics$N50)
-df_dRep_MAG_metrics$Contig_count<-as.numeric(df_dRep_MAG_metrics$Contig_count)
-
-library(ggplot2)
-library(ggpubr)
 
 #Strain Heterogeneity Boxplot
 boxplot_dRep_MAG_het<-ggplot(df_dRep_MAG_metrics, aes(x=Group, y=Strain_Heterogeneity,fill=Group))+
@@ -184,19 +158,6 @@ boxplot_dRep_MAG_het<-ggplot(df_dRep_MAG_metrics, aes(x=Group, y=Strain_Heteroge
 boxplot_dRep_MAG_het
   
 #--------------------------220329 MQ Winner vs. HQ Winner vs. Ref dRep 0.98  MAG N50--------------------------
-#Read in CSV
-df_dRep_MAG_metrics<-read.csv('220329_WinnersMQ-vs-WinnersHQ-vs-Refs_dRep_0.98_metrics.csv',
-                              sep=",",
-                              header = T)
-df_dRep_MAG_metrics$Group<-factor(df_dRep_MAG_metrics$Group, levels=c("MQ Winners", "HQ Winners", "Reference Genomes"))
-df_dRep_MAG_metrics$Completeness<-as.numeric(df_dRep_MAG_metrics$Completeness)
-df_dRep_MAG_metrics$Contamination<-as.numeric(df_dRep_MAG_metrics$Contamination)
-df_dRep_MAG_metrics$Strain_Heterogeneity<-as.numeric(df_dRep_MAG_metrics$Strain_Heterogeneity)
-df_dRep_MAG_metrics$N50<-as.numeric(df_dRep_MAG_metrics$N50)
-df_dRep_MAG_metrics$Contig_count<-as.numeric(df_dRep_MAG_metrics$Contig_count)
-
-library(ggplot2)
-library(ggpubr)
 
 #N50 boxplot
 library(scales)
@@ -222,20 +183,6 @@ boxplot_dRep_MAG_N50<-ggplot(df_dRep_MAG_metrics, aes(x=Group, y=log10(N50), fil
 boxplot_dRep_MAG_N50
   
 #--------------------------220329 MQ Winner vs. HQ Winner vs. Ref dRep 0.98  MAG Contig Count--------------------------
-#Read in CSV
-df_dRep_MAG_metrics<-read.csv('220329_WinnersMQ-vs-WinnersHQ-vs-Refs_dRep_0.98_metrics.csv',
-                              sep=",",
-                              header = T)
-df_dRep_MAG_metrics$Group<-factor(df_dRep_MAG_metrics$Group, levels=c("MQ Winners", "HQ Winners", "Reference Genomes"))
-df_dRep_MAG_metrics$Completeness<-as.numeric(df_dRep_MAG_metrics$Completeness)
-df_dRep_MAG_metrics$Contamination<-as.numeric(df_dRep_MAG_metrics$Contamination)
-df_dRep_MAG_metrics$Strain_Heterogeneity<-as.numeric(df_dRep_MAG_metrics$Strain_Heterogeneity)
-df_dRep_MAG_metrics$N50<-as.numeric(df_dRep_MAG_metrics$N50)
-df_dRep_MAG_metrics$Contig_count<-as.numeric(df_dRep_MAG_metrics$Contig_count)
-
-library(ggplot2)
-library(ggpubr)
-library(scales)
 
 #Contig Count Boxplot
 boxplot_dRep_MAG_contig_count<-ggplot(df_dRep_MAG_metrics, aes(x=Group, y=log10(Contig_count), fill=Group))+  
