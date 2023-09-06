@@ -510,10 +510,6 @@ ggplot(data=df_infant_infant_bins, aes(x=MOL_elapsed, y=Incidence_per_individual
 library(ggplot2)
 library(ggprism)
 
-#Set working directory
-setwd("~/Library/Mobile Documents/com~apple~CloudDocs/WashU/1_Dantas Lab/Projects/04_CDI_Twins_Diet/230127_StrainSharing/csv")
-
-
 ###STACKED BARPLOT - COMBINED
 #Read in dataframe with count for transient and persisting MAGs
 df_dyad_triad_taxa<-read.csv('230131_Dyad_Triad_taxa.csv',
