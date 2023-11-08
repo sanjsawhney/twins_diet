@@ -782,8 +782,9 @@ ggplot(data=df_sampling, aes(x=MOL, y=Individual)) +
 
 </pre>
 
-
 # Supplementary Figure 4
+
+<pre>
 
 #--------------------------Suppl Figure 4A: Enterotype 6-------------------------
 
