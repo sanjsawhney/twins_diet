@@ -1,6 +1,10 @@
 # twins_diet
 Code used for data visualization and analysis in manuscript "Weaning accelerates and transforms within-host adaptation in the infant gut microbiome" by Sawhney et al.
 
+# Figure 2F
+
+Made in Prism 9.
+
 # Figure 3A
 
 Made in Biorender.com
@@ -754,29 +758,127 @@ ggplot(df_pairwise_boxplot, aes(Weaning, Bray_Curtis_distance)) +
 
 library(ggplot2)
 
-df_sampling<-read.csv('230802_sampling_timelines.csv',
+df_sampling<-read.csv('231030_sampling_timelines.csv',
                       sep=",",
                       header = T)
 
 df_sampling$MOL <- as.numeric(df_sampling$MOL)
 df_sampling$Individual <- as.factor(df_sampling$Individual)
 df_sampling$Individual <- factor(df_sampling$Individual, levels = c("48-2","48-1","47-2","47-1","45-2","45-1","44-2","44-1","43-2","43-1","40-2","40-1","39-2","39-1","37-2","37-1","30-2","30-1","29-2","29-1","28-2","28-1","27-2","27-1","25-2","25-1","24-2","24-1","21-2","21-1","20-2","20-1","19-2","19-1","18-2","18-1","17-2","17-1","16-2","16-1","14-2","14-1","13-2","13-1","12-2","12-1","10-2","10-1","08-2","08-1","06-2","06-1","C048","C047","C045","C044","C043","C040","C039","C037","C030","C029","C028","C027","C025","C024","C021","C020","C019","C018","C017","C016","C014","C013","C012","C010","C008","C006"))
-df_sampling$Cohort_sequencing <- factor(df_sampling$Cohort_sequencing, levels = c("shallow shotgun","extended"))
+df_sampling$Cohort_sequencing <- factor(df_sampling$Cohort_sequencing, levels = c("Shallow Shotgun","Extended"))
 
-#Plot
 ggplot(data=df_sampling, aes(x=MOL, y=Individual)) +
   geom_line()+
   geom_point(shape=21, aes(color=Cohort_sequencing, fill=Cohort_sequencing))+
+  #geom_point(aes(shape=Cohort_individual,color=Cohort_sequencing, fill=Cohort_sequencing))+
+  #guides(shape=guide_legend(title="Individual"))+
+  #scale_shape_manual(values=c(21,22))+
+  scale_fill_manual(values=c("#EBEBEB", "black"))+
   scale_color_manual(values=c("black", "black"))+
-  scale_fill_manual(values=c("gray", "black"))+
   xlab("Months post childbirth")+
   guides(fill=guide_legend(title="Sequencing type"))+
   theme_bw()+
   theme(axis.text.x = element_text(size=14, face="bold"), axis.text.y = element_text(size=8, face="bold"), plot.title=element_blank(), axis.title=element_text(size=14, face="bold"), panel.border = element_rect(colour = "black", size=0.75))
 
 </pre>
-  
+
+
 # Supplementary Figure 4
+
+#--------------------------Suppl Figure 4A: Enterotype 6-------------------------
+
+library(ggplot2)
+library(ggpubr)
+
+#Read in CSV
+df_e6<-read.csv('e6.csv',
+                sep=",",
+                header = T)
+df_e6$Cohort<-factor(df_e6$Cohort, levels=c("Transitional", "Stable"))
+df_e6$Percent<-as.numeric(df_e6$Percent)
+
+boxplot_e6<-ggplot(df_e6, aes(x=Cohort, y=Percent, fill=Cohort))+  
+  geom_boxplot(width=0.5, lwd=0.45, outlier.shape = NA)+
+  geom_point(size=1.25, alpha=0.6, color="#333333", position=position_jitterdodge(jitter.width=1, jitter.height =0.05))+
+  scale_x_discrete(labels = c("Transitional\n(n=51 stool)","Stable\n(n=85 stool)"))+
+  labs(title="Enterotype 6", y="Pre-weaning Exposure to Breastmilk [%]")+
+  scale_y_continuous(limits=c(-1,115), expand = c(0.0095,0), breaks=c(25,50,75,100))+
+  scale_fill_manual(values=c("#FDF8F5", "#F9FBF6"))+
+  theme(axis.title.y=element_blank())+
+  theme_bw()+
+  theme(legend.position='none',panel.border = element_rect(color = "black", size=1),axis.ticks = element_line(colour = "black", size = 0.7), axis.title.x = element_blank(), axis.text = element_text(size = 16, face="bold"),axis.title = element_text(size = 20, face="bold"), plot.title=element_text(hjust = 0.5, size = 20, face="bold"),panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+
+boxplot_e6
+
+#--------------------------Suppl Figure 4B: Enterotype 7-------------------------
+
+#Read in CSV
+df_e7<-read.csv('e7.csv',
+                sep=",",
+                header = T)
+df_e7$Cohort<-factor(df_e7$Cohort, levels=c("Transitional", "Stable"))
+df_e7$Percent<-as.numeric(df_e7$Percent)
+
+boxplot_e7<-ggplot(df_e7, aes(x=Cohort, y=Percent, fill=Cohort))+  
+  geom_boxplot(width=0.5, lwd=0.45, outlier.shape = NA)+
+  geom_point(size=1.25, alpha=0.6, color="#333333", position=position_jitterdodge(jitter.width=1, jitter.height =0.05))+
+  scale_x_discrete(labels = c("Transitional\n(n=46 stool)","Stable\n(n=58 stool)"))+
+  labs(title="Enterotype 7", y="Pre-weaning Exposure to Breastmilk [%]")+
+  scale_y_continuous(limits=c(-1,115), expand = c(0.0095,0), breaks=c(25,50,75,100))+
+  scale_fill_manual(values=c("#FDF8F5", "#F9FBF6"))+
+  theme(axis.title.y=element_blank())+
+  theme_bw()+
+  theme(legend.position='none',panel.border = element_rect(color = "black", size=1),axis.ticks = element_line(colour = "black", size = 0.7), axis.title.x = element_blank(), axis.text = element_text(size = 16, face="bold"),axis.title = element_text(size = 20, face="bold"), plot.title=element_text(hjust = 0.5, size = 20, face="bold"),panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+
+boxplot_e7
+
+#--------------------------Suppl Figure 4C: Enterotype 8-------------------------
+
+#Read in CSV
+df_e8<-read.csv('e8.csv',
+                sep=",",
+                header = T)
+df_e8$Cohort<-factor(df_e8$Cohort, levels=c("Transitional", "Stable"))
+df_e8$Percent<-as.numeric(df_e8$Percent)
+
+boxplot_e8<-ggplot(df_e8, aes(x=Cohort, y=Percent, fill=Cohort))+  
+  geom_boxplot(width=0.5, lwd=0.45, outlier.shape = NA)+
+  geom_point(size=1.25, alpha=0.6, color="#333333", position=position_jitterdodge(jitter.width=1, jitter.height =0.05))+
+  scale_x_discrete(labels = c("Transitional\n(n=24 stool)","Stable\n(n=142 stool)"))+
+  labs(title="Enterotype 8", y="Pre-weaning Exposure to Breastmilk [%]")+
+  scale_y_continuous(limits=c(-1,115), expand = c(0.0095,0), breaks=c(25,50,75,100))+
+  scale_fill_manual(values=c("#FDF8F5", "#F9FBF6"))+
+  theme(axis.title.y=element_blank())+
+  theme_bw()+
+  theme(legend.position='none',panel.border = element_rect(color = "black", size=1),axis.ticks = element_line(colour = "black", size = 0.7), axis.title.x = element_blank(), axis.text = element_text(size = 16, face="bold"),axis.title = element_text(size = 20, face="bold"), plot.title=element_text(hjust = 0.5, size = 20, face="bold"),panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+
+boxplot_e8
+
+#--------------------------Suppl Figure 4D: Enterotype 9-------------------------
+
+#Read in CSV
+df_e9<-read.csv('e9.csv',
+                sep=",",
+                header = T)
+df_e9$Cohort<-factor(df_e9$Cohort, levels=c("Transitional", "Stable"))
+df_e9$Percent<-as.numeric(df_e9$Percent)
+
+boxplot_e9<-ggplot(df_e9, aes(x=Cohort, y=Percent, fill=Cohort))+  
+  geom_boxplot(width=0.5, lwd=0.45, outlier.shape = NA)+
+  geom_point(size=1.25, alpha=0.6, color="#333333", position=position_jitterdodge(jitter.width=1, jitter.height =0.05))+
+  scale_x_discrete(labels = c("Transitional\n(n=5 stool)","Stable\n(n=59 stool)"))+
+  labs(title="Enterotype 9", y="Pre-weaning Exposure to Breastmilk [%]")+
+  scale_y_continuous(limits=c(-1,115), expand = c(0.0095,0), breaks=c(25,50,75,100))+
+  scale_fill_manual(values=c("#FDF8F5", "#F9FBF6"))+
+  theme(axis.title.y=element_blank())+
+  theme_bw()+
+  theme(legend.position='none',panel.border = element_rect(color = "black", size=1),axis.ticks = element_line(colour = "black", size = 0.7), axis.title.x = element_blank(), axis.text = element_text(size = 16, face="bold"),axis.title = element_text(size = 20, face="bold"), plot.title=element_text(hjust = 0.5, size = 20, face="bold"),panel.grid.major = element_blank(), panel.grid.minor = element_blank())
+
+boxplot_e9
+
+</pre>
+
+# Supplementary Figure 5
 <pre>
 library(ggplot2)
 
@@ -840,11 +942,11 @@ MQN50_MAGs
 
 </pre>
 
-# Supplementary Figure 5A
+# Supplementary Figure 6A
 
 <pre>
 
-  #--------------------------Suppl Figure 5A: 220227 pre dRep MOL MAG Count--------------------------
+  #--------------------------Suppl Figure 6A: 220227 pre dRep MOL MAG Count--------------------------
 library(ggplot2)
 library(RColorBrewer)
 
@@ -866,10 +968,10 @@ ggplot(data=df_MOL_count, aes(x=MOL,y=Count))+
 
 </pre>
 
-# Supplementary Figure 5B
+# Supplementary Figure 6B
 
 <pre>
-#--------------------------Suppl Figure 5B: 220227 pre dRep Timepoint MAG Count (Infant Fraction)--------------------------
+#--------------------------Suppl Figure 6B: 220227 pre dRep Timepoint MAG Count (Infant Fraction)--------------------------
 #Read in CSV
 df_MAG_timepoint_infants<-read.csv('220227_pre-dRep_MAG_Fraction_Timepoint_Infants.csv',
                              sep=",",
@@ -888,10 +990,10 @@ barplot_MAG_timepoint_infants
 
   </pre>
   
-# Supplementary Figure 5C
+# Supplementary Figure 6C
 
 <pre>
-#--------------------------Suppl Figure 5C: 220227 pre dRep Timepoint MAG Count (Maternal Fraction)--------------------------
+#--------------------------Suppl Figure 6C: 220227 pre dRep Timepoint MAG Count (Maternal Fraction)--------------------------
 #Read in CSV
 df_MAG_timepoint_mothers<-read.csv('220227_pre-dRep_MAG_Fraction_Timepoint_Mothers.csv',
                            sep=",",
@@ -910,10 +1012,10 @@ barplot_MAG_timepoint_mothers
 
 </pre>
   
-# Supplementary Figure 5D
+# Supplementary Figure 6D
 
 <pre>
-#--------------------------Suppl Figure 5D: 220301 pre-dRep MAG Count by # of Samples (All vs Filtered)--------------------------
+#--------------------------Suppl Figure 6D: 220301 pre-dRep MAG Count by # of Samples (All vs Filtered)--------------------------
 #Read in CSV
 df_pre_dRep_MAG_ct_vs<-read.csv('220301_pre-dRep_MAG_Count_Filtered.csv',
                              sep=",",
@@ -942,10 +1044,10 @@ boxplot_pre_dRep_MAG_ct_vs<-ggplot(df_pre_dRep_MAG_ct_vs, aes(x=Timepoints, y=MA
 boxplot_pre_dRep_MAG_ct_vs
  </pre>
 
-# Supplementary Figure 5E
+# Supplementary Figure 6E
 
 <pre>
-  #--------------------------Suppl Figure 5E: 220620 Number of MAGs per dRep Winner bin--------------------------
+  #--------------------------Suppl Figure 6E: 220620 Number of MAGs per dRep Winner bin--------------------------
 
   #Read in CSV
 df_MAGs_per_dRep_Winner<-read.csv('220620_MAGs_per_dRep_Winner.csv',
@@ -963,10 +1065,10 @@ barplot_MAGs_per_dRep_Winner <- ggplot(data=df_MAGs_per_dRep_Winner, aes(x=MAGs_
 barplot_MAGs_per_dRep_Winner
   </pre>
 
-# Supplementary Figure 5F
+# Supplementary Figure 6F
 
 <pre>
-#--------------------------Suppl Figure 5F: 220227 pre vs. post dRep MAG Count--------------------------
+#--------------------------Suppl Figure 6F: 220227 pre vs. post dRep MAG Count--------------------------
 library(ggplot2)
 library(RColorBrewer)
 
@@ -988,10 +1090,10 @@ ggplot(data=df_MAG_count, aes(x=pre_dRep,y=post_dRep))+
   theme(axis.title.x = element_text(face="bold"),axis.title.y = element_text(face="bold"))
 </pre>
 
-# Supplementary Figure 6A
+# Supplementary Figure 7A
 
 <pre>
-#--------------------------Suppl Figure 6A: 220228 Assembly Type Percent--------------------------
+#--------------------------Suppl Figure 7A: 220228 Assembly Type Percent--------------------------
 #Read in CSV
 df_Assembly_Type<-read.csv('220228_Assembly_Type_Percent.csv',
                               sep=",",
@@ -1010,10 +1112,10 @@ barplot_Assembly_Type
 
 </pre>
 
-# Supplementary Figure 6B
+# Supplementary Figure 7B
 
 <pre>
-#--------------------------Suppl Figure 6B: 220228 Assembly Source Percent--------------------------
+#--------------------------Suppl Figure 7B: 220228 Assembly Source Percent--------------------------
 #Read in CSV
 df_Assembly_Source<-read.csv('220228_Assembly_Source_Percent.csv',
                            sep=",",
@@ -1033,10 +1135,10 @@ barplot_Assembly_Source
 
 </pre>
 
-# Supplementary Figure 7A
+# Supplementary Figure 8A
 
 <pre>
-#------------------------Suppl Figure 7A: Persisting MAGs: Number of unique, persisting MAGs of a given taxa------------------------
+#------------------------Suppl Figure 8A: Persisting MAGs: Number of unique, persisting MAGs of a given taxa------------------------
 
 library(ggplot2)
 library(ggprism)
@@ -1060,10 +1162,10 @@ ggplot(data=df_persistingMAGs_per_taxa, aes(x=samples, y=count)) +
 
 </pre>
 
-# Supplementary Figure 7B
+# Supplementary Figure 8B
 
 <pre>
-#------------------------Suppl Figure 7B: Persisting MAGs: Samples within individual------------------------
+#------------------------Suppl Figure 8B: Persisting MAGs: Samples within individual------------------------
 
 library(ggplot2)
 library(ggprism)
@@ -1087,10 +1189,10 @@ ggplot(data=df_persistingMAGs_samples_per_individual, aes(x=samples, y=count)) +
 
 </pre>
 
-# Supplementary Figure 7C
+# Supplementary Figure 8C
 
 <pre>
-#------------------------Suppl Figure 7C: Strain Sharing: Samples per shared MAG------------------------
+#------------------------Suppl Figure 8C: Strain Sharing: Samples per shared MAG------------------------
 
 library(ggplot2)
 library(ggprism)
@@ -1114,11 +1216,11 @@ ggplot(data=df_sharedMAGs_samples_per_MAG, aes(x=samples, y=count)) +
 
 </pre>
 
-# Supplementary Figure 8
+# Supplementary Figure 9
 
 <pre>
 
-#------------------------Suppl Figure 8: Aggregate popSNP by Length of persistence (Infant): FACETED BY TAXA, COLORED BY INDIVIDUAL------------------------
+#------------------------Suppl Figure 9: Aggregate popSNP by Length of persistence (Infant): FACETED BY TAXA, COLORED BY INDIVIDUAL------------------------
 
 library(ggplot2)
 library(ggprism)
@@ -1148,11 +1250,11 @@ plot_popSNPs_byLOPthruTP2_ALLtaxa_infants_barebones_individual + facet_wrap(~ Ta
 
 </pre>
 
-# Supplementary Figure 9
+# Supplementary Figure 10
 
 <pre>
 
-#------------------------Suppl Figure 9: Aggregate popSNP by Length of persistence (Infant): FACETED BY TAXA, COLORED BY WEANING STATUS------------------------
+#------------------------Suppl Figure 10: Aggregate popSNP by Length of persistence (Infant): FACETED BY TAXA, COLORED BY WEANING STATUS------------------------
 
 library(ggplot2)
 library(ggprism)
@@ -1183,11 +1285,11 @@ plot_popSNPs_byLOPthruTP2_ALLtaxa_infants_barebones_diet + facet_wrap(~ Taxa, nc
 
 </pre>
 
-# Supplementary Figure 10
+# Supplementary Figure 11
 
 <pre>
 
-#------------------------Suppl Figure 10: Aggregate popSNP by Length of persistence (Mother): FACETED BY TAXA, COLORED BY INDIVIDUAL------------------------
+#------------------------Suppl Figure 11: Aggregate popSNP by Length of persistence (Mother): FACETED BY TAXA, COLORED BY INDIVIDUAL------------------------
 
 #TAXA5CT: Read in MOTHER dataframe that has breadth-adjusted popSNP ct by LoPthruTP2
 df_popSNP_ct_perMAG_byLOPthruTP2_mothers_5ct<-read.csv('230311_popSNP_ct_perMAG_byLOPthruTP2_Taxa5ct_mothers.csv',
@@ -1210,10 +1312,10 @@ plot_popSNPs_byLOPthruTP2_ALLtaxa_mothers_barebones + facet_wrap(~ Taxa, ncol=5,
 
 </pre>
 
-# Supplementary Figure 11A
+# Supplementary Figure 12A
 
 <pre>
-#------------------------Suppl Figure 11A1: Aggregate popSNP by Length of persistence - Mothers, linear regression------------------------
+#------------------------Suppl Figure 12A1: Aggregate popSNP by Length of persistence - Mothers, linear regression------------------------
 
 library(ggplot2)
 library(ggprism)
@@ -1240,7 +1342,7 @@ ggplot(data=df_popSNP_ct_perMAG_byLOPthruTP2_mothers_alltaxa, aes(x=LoPthruTP2, 
   theme(axis.text=element_text(size=14,face="bold"), axis.title=element_text(size=14,face="bold"), panel.grid.minor=element_blank(), legend.title=element_blank(), plot.title=element_text(size=19,face="bold",hjust=0.5), panel.grid.major=element_blank(), panel.border=element_rect(colour="black",size=1))
 
 
-#------------------------Suppl Figure 11A2: Aggregate popSNP by Length of persistence - Infants, linear regression------------------------
+#------------------------Suppl Figure 12A2: Aggregate popSNP by Length of persistence - Infants, linear regression------------------------
 
 #INFANTS: ALL TAXA: Breadth-adjusted Aggregate popSNP ct by LoPthruTP2 (230311_01.1_Infant_breadth-adjAGGREGATEpopSNP_alltaxa.pdf)
 df_popSNP_ct_perMAG_byLOPthruTP2_infants_alltaxa<-read.csv('230314_popSNP_ct_perMAG_byLOPthruTP2_infants_gs.csv', sep=",", header = T)
@@ -1261,10 +1363,10 @@ ggplot(data=df_popSNP_ct_perMAG_byLOPthruTP2_infants_alltaxa, aes(x=LoPthruTP2, 
 
 </pre>
 
-# Supplementary Figure 11B
+# Supplementary Figure 12B
 
 <pre>
-#------------------------Suppl Figure 11B1: Aggregate popSNP by Length of persistence - Mothers, local regression------------------------
+#------------------------Suppl Figure 12B1: Aggregate popSNP by Length of persistence - Mothers, local regression------------------------
 
 library(ggplot2)
 library(ggprism)
@@ -1287,7 +1389,7 @@ ggplot(data=df_popSNP_ct_perMAG_byLOPthruTP2_mothers_alltaxa, aes(x=LoPthruTP2, 
   theme_bw()+
   theme(axis.text=element_text(size=14,face="bold"), axis.title=element_text(size=14,face="bold"), panel.grid.minor=element_blank(), legend.title=element_blank(), plot.title=element_text(size=19,face="bold",hjust=0.5), panel.grid.major=element_blank(), panel.border=element_rect(colour="black",size=1))
 
-#------------------------Suppl Figure 11B2: Aggregate popSNP by Length of persistence - Infants, local regression------------------------
+#------------------------Suppl Figure 12B2: Aggregate popSNP by Length of persistence - Infants, local regression------------------------
 
 
 #INFANTS: ALL TAXA: Breadth-adjusted Aggregate popSNP ct by LoPthruTP2 (230311_01.1_Infant_breadth-adjAGGREGATEpopSNP_alltaxa.pdf)
@@ -1307,14 +1409,14 @@ ggplot(data=df_popSNP_ct_perMAG_byLOPthruTP2_infants_alltaxa, aes(x=LoPthruTP2, 
 
 </pre>
 
-# Supplementary Figure 12
+# Supplementary Figure 13
 
 Made in Prism 9.
 
-# Supplementary Figure 13
+# Supplementary Figure 14
 
 <pre>
-#------------------------Suppl Figure 13: Boxplot comparing Bray-Curtis distance between Pre-Weaning, Post-Weaning, and Mother mutated gene COG profiles, split by family------------------------
+#------------------------Suppl Figure 14: Boxplot comparing Bray-Curtis distance between Pre-Weaning, Post-Weaning, and Mother mutated gene COG profiles, split by family------------------------
 
 #read in boxplot csv
 df_pairwise_boxplot<-read.csv('230322_bray_pairwise_boxplot_2groups.csv',
