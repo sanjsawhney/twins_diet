@@ -782,7 +782,7 @@ ggplot(data=df_sampling, aes(x=MOL, y=Individual)) +
 
 </pre>
 
-# Supplementary Figure 4
+# Supplementary Figure 4A
 
 <pre>
 
@@ -811,6 +811,11 @@ boxplot_e6<-ggplot(df_e6, aes(x=Cohort, y=Percent, fill=Cohort))+
 
 boxplot_e6
 
+</pre>
+
+# Supplementary Figure 4B
+
+<pre>
 #--------------------------Suppl Figure 4B: Enterotype 7-------------------------
 
 #Read in CSV
@@ -833,6 +838,11 @@ boxplot_e7<-ggplot(df_e7, aes(x=Cohort, y=Percent, fill=Cohort))+
 
 boxplot_e7
 
+</pre>
+
+# Supplementary Figure 4C
+
+<pre>
 #--------------------------Suppl Figure 4C: Enterotype 8-------------------------
 
 #Read in CSV
@@ -855,6 +865,11 @@ boxplot_e8<-ggplot(df_e8, aes(x=Cohort, y=Percent, fill=Cohort))+
 
 boxplot_e8
 
+</pre>
+
+# Supplementary Figure 4D
+
+<pre>
 #--------------------------Suppl Figure 4D: Enterotype 9-------------------------
 
 #Read in CSV
