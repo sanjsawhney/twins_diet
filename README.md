@@ -1,6 +1,153 @@
 # twins_diet
 Code used for data visualization and analysis in manuscript "Weaning accelerates and transforms within-host adaptation in the infant gut microbiome" by Sawhney et al.
 
+# Code for bioinformatics tools
+<pre>
+  Trimmomatic
+java -jar $TRIMMOMATIC_HOME/trimmomatic-0.38.jar \
+    PE \
+    -phred33 \
+    -trimlog \
+    ${outdir}/Paired_${sample}_trimlog.txt \
+    ${indir}/${sample}_R1.fastq \
+    ${indir}/${sample}_R2.fastq \
+    ${outdir}/${sample}_FW_trimmed.fastq \
+    ${outdir}/${sample}_FW_trimmed_unpaired.fastq \
+    ${outdir}/${sample}_RV_trimmed.fastq \
+    ${outdir}/${sample}_RV_trimmed_unpaired.fastq \
+    ILLUMINACLIP:${adapt}:2:30:10:1:true \
+    SLIDINGWINDOW:4:15 \
+    LEADING:10 \
+    TRAILING:10 \
+    MINLEN:60
+
+Deconseq
+deconseq.pl -f ${indir}/${sample}.fastq \
+    -out_dir ${outdir} \
+    -dbs hsref38
+
+Metaphlan2
+metaphlan2.py <(zcat ${indir}/${ID}_FW_clean.fastq ${indir}/${ID}_RV_clean.fastq) --mpa_pkl ${mpa_dir}/db_v20/mpa_v20_m200.pkl --bowtie2db ${mpa_dir}/db_v20/mpa_v20_m200 --bowtie2out ${outdir}/${ID}.bowtie2.bz2 --nproc 5 --input_type multifastq > ${outdir}/${ID}_profiled_metagenome.txt
+
+SPAdes
+spades.py --meta --Nanopore -t ${SLURM_CPUS_PER_TASK} \
+    --pe1-1 ${indir1}/${sample}_R1.fastq \
+    --pe1-2 ${indir1}/${sample}_R2.fastq \
+    -o ${outdir}/${sample}/
+
+Flye
+flye --nano-raw ${indir}/${sample}.fastq.gz \ 
+    --out-dir ${outdir}/${sample} \
+    --pe1-2 ${indir1}/${sample}_R2.fastq \
+    --meta \
+    --iterations 3 \
+
+Bowtie
+bowtie2-build ${indir}/${ref}/assembly.fasta ${outdir}/${ref}/${ref}
+bowtie2 -p ${SLURM_CPUS_PER_TASK} \
+    -x ${index} \
+    -S ${outdir}/${ref}__${sample}_mappedreads.sam \
+    -1 ${indir}/${sample}_R1.fastq \
+    -2 ${indir}/${sample}_R2.fastq \
+
+Samtools
+samtools view -bS ${indir}/${ID}__${sample}/${ID}__${sample}_mappedreads.sam > ${indir}/${ID}__${sample}/${ID}__${sample}_mappedreads.bam
+samtools sort ${indir}/${ID}__${sample}/${ID}__${sample}_mappedreads.bam -o ${indir}/${ID}__${sample}/${ID}__${sample}_mappedreads_sorted.bam
+
+
+Bedtools
+## Get coverage depth info at nucleotide resolution
+bedtools genomecov -ibam ${indir1}/${ID}__${sample}_mappedreads_sorted.bam -bg | awk '$4 > 0' > ${outdir}/${ID}__${sample}_genomecov.txt
+
+## Merge regions of different coverage depths if they are adjacent
+bedtools merge -i ${outdir}/${ID}__${sample}_genomecov.txt -d 1 > ${outdir}/${ID}__${sample}_all_aligned_regions.txt
+
+## Remove unmerged text file
+rm ${outdir}/${ID}__${sample}_genomecov.txt
+
+## Get percent of each contig covered at at least 1x
+bedtools genomecov -max 1 -ibam ${indir1}/${ID}__${sample}_mappedreads_sorted.bam > ${outdir}/${ID}__${sample}_contighistogram.txt
+
+## Create mapping files for high coverage and low coverage contigs
+awk '{if($2==1 && $5>=0.85){print $1}}' ${outdir}/${ID}__${sample}_contighistogram.txt > ${outdir}/${ID}__${sample}_mappingfile_highcov.txt
+awk '{if($2==1 && $5<0.85 && $3>=1000){print $1}}' ${outdir}/${ID}__${sample}_contighistogram.txt > ${outdir}/${ID}__${sample}_mappingfile_lowcov.txt
+
+## Grab aligned regions of low coverage contigs
+grep -w -F -f ${outdir}/${ID}__${sample}_mappingfile_lowcov.txt ${outdir}/${ID}__${sample}_all_aligned_regions.txt > ${outdir}/${ID}__${sample}_lowcov_aligned_regions.txt
+bedtools getfasta -fi ${indir2}/${ID}_assembly.fasta -bed ${outdir}/${ID}__${sample}_lowcov_aligned_regions.txt -fo ${outdir}/fasta/${ID}__${sample}_lowcov_aligned_regions.fasta -split | fold -w 60
+
+## Grab total contig of high coverage contigs
+seqtk subseq ${indir2}/${ID}_assembly.fasta ${outdir}/${ID}__${sample}_mappingfile_highcov.txt > ${outdir}/fasta/${ID}__${sample}_highcov.fasta
+
+## Combine fasta files
+cat ${outdir}/fasta/${ID}__${sample}_highcov.fasta ${outdir}/fasta/${ID}__${sample}_lowcov_aligned_regions.fasta > ${outdir}/fasta/${ID}__${sample}_cmb.fasta
+
+Pilon
+pilon --genome ${indir1}/${ID}__${sample}_cmb.fasta --frags ${indir2}/${ID}__${sample}_mappedreads_sorted.bam --output ${ID}__${sample} --outdir ${outdir} --threads 8
+
+DAS Tool
+DAS_Tool --search_engine diamond, -l concoct,maxbin,metabat
+
+dRep
+dRep dereplicate -g ${indir}/*.fasta -p 8 -l 50000 -comp 50 -con 10 -sa 0.98 --S_algorithm gANI -nc 0.3 ${outdir}
+
+Mash
+mash screen -w -p ${SLURM_CPUS_PER_TASK} ${refpath1} ${indir}/${sample} > ${outdir1}/${sample}_tmp.tab
+
+pyANI
+average_nucleotide_identity.py -o ${outdir1} -i ${tempDir1} -m ANIm --nocompress --verbose -f
+
+GTDB-TK classify
+gtdbtk classify_wf \
+        --genome_dir ${indir} \
+        -x fasta \
+        --out_dir ${outdir}
+
+GTDB-TK de novo
+gtdbtk de_novo_wf \
+        --genome_dir ${indir} \
+        -x fasta \
+        --outgroup_taxon p__Firmicutes \
+        --out_dir ${outdir} \
+        --bacteria \
+        --skip_gtdb_refs
+
+checkM
+checkm lineage_wf -f ${outdir}/output.txt \
+        -t ${SLURM_CPUS_PER_TASK} \
+        -x fna \
+        --tab_table \
+        ${indir} ${outdir}
+
+Quast
+quast.py ${indir}/${sample}.fna -l ${sample} -o ${outdir}/${sample}
+
+dRep parse-stb
+parse_stb.py --reverse -f ${indir}/01_dereplicated_genomes/*.fasta  -o ${outdir}/${sample}_cat_genomes.stb
+
+inStrain profile
+inStrain profile ${indir}/${ID}_${sample}_mappedreads_sorted.bam ${basedir}/02_cat_derep_genomes/${ID}_cat.fasta \
+    -o ${outdir}/${ID}_${sample}.IS \
+    -p 6 \
+    -g ${basedir}/02_cat_derep_genomes/${ID}_cat_prodigal.fna \
+    -s ${basedir}/02_cat_derep_genomes/${ID}_cat_genomes.stb
+
+inStrain compare
+inStrain compare -i ${indir}/*.IS/ \
+    -bams ${basedir}/04_bowtie/${ID}_cat/${ID}*mappedreads_sorted.bam \
+    -o ${outdir}/${ID}.IS.COMPARE \
+    -p ${SLURM_CPUS_PER_TASK} \
+    --store_mismatch_locations \
+    -s ${basedir}/02_cat_derep_genomes/${ID}_cat_genomes.stb \
+    --database_mode
+
+
+ dbcan
+ run_dbcan ${indir}/mag_upload_sed/${sample}.fasta prok \
+        --out_dir ${outdir}/${sample} \
+        --db_dir ${refdir}
+</pre>
+
 # Figure 2F
 
 Made in Prism 9.
